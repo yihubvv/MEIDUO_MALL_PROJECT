@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps.users',
+    'apps.users.apps.UsersConfig',
     # CORS
     'corsheaders',
 ]
@@ -88,7 +88,7 @@ DATABASES = {
         'PORT': 3306,                          # Database port
         'USER': 'root',                        # Database username
         'PASSWORD': 'mysql',                   # Database user password
-        'NAME': 'meiduo_mall_42'               # Database name
+        'NAME': 'meiduo_mall'               # Database name
     }
 }
 
@@ -151,7 +151,7 @@ CACHES = {
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "session"
 
-################日志#######################
+################log#######################
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,  # Whether to disable existing loggers
