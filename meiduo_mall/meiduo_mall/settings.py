@@ -10,15 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
-# https://gitee.com/itcastitheima/shunyi_git_42.git 远程仓库地址
-
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-#ctl + K  来进行 git的 git add commit 的操作
-# ctl + shift+k 来进行 git push
+# ctl + K  used for git add and commit operations
+# ctl + shift + k used for git push
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -47,7 +45,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    # CORS 的配置放在最上边
+# Place CORS configuration at the top
     'corsheaders.middleware.CorsMiddleware',
 
     'django.middleware.security.SecurityMiddleware',
@@ -85,12 +83,12 @@ WSGI_APPLICATION = 'meiduo_mall.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',  # 数据库引擎
-        'HOST': '127.0.0.1',  # 数据库主机
-        'PORT': 3306,  # 数据库端口
-        'USER': 'root',  # 数据库用户名
-        'PASSWORD': 'mysql',  # 数据库用户密码
-        'NAME': 'meiduo_mall_42'  # 数据库名字
+        'ENGINE': 'django.db.backends.mysql',  # Database engine
+        'HOST': '127.0.0.1',                   # Database host
+        'PORT': 3306,                          # Database port
+        'USER': 'root',                        # Database username
+        'PASSWORD': 'mysql',                   # Database user password
+        'NAME': 'meiduo_mall_42'               # Database name
     }
 }
 
@@ -135,14 +133,14 @@ STATIC_URL = '/static/'
 
 #############django-redis###########################
 CACHES = {
-    "default": {        #预留
+    "default": {        # Reserved
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://127.0.0.1:6379/0",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
-    "session": {  # 用于保存session数据
+    "session": {  # Used to store session data
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://127.0.0.1:6379/1",
         "OPTIONS": {
@@ -156,8 +154,8 @@ SESSION_CACHE_ALIAS = "session"
 ################日志#######################
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,  # 是否禁用已经存在的日志器
-    'formatters': {  # 日志信息显示的格式
+    'disable_existing_loggers': False,  # Whether to disable existing loggers
+    'formatters': {  # Log message display formats
         'verbose': {
             'format': '%(levelname)s %(asctime)s %(module)s %(lineno)d %(message)s'
         },
@@ -165,48 +163,50 @@ LOGGING = {
             'format': '%(levelname)s %(module)s %(lineno)d %(message)s'
         },
     },
-    'filters': {  # 对日志进行过滤
-        'require_debug_true': {  # django在debug模式下才输出日志
+    'filters': {  # Filters for logs
+        'require_debug_true': {  # Output logs only when Django is in debug mode
             '()': 'django.utils.log.RequireDebugTrue',
         },
     },
-    'handlers': {  # 日志处理方法
-        'console': {  # 向终端中输出日志
+    'handlers': {  # Log handling methods
+        'console': {  # Output logs to terminal
             'level': 'INFO',
             'filters': ['require_debug_true'],
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
         },
-        'file': {  # 向文件中输出日志
+        'file': {  # Output logs to file
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs/meiduo.log'),  # 日志文件的位置
+            'filename': os.path.join(BASE_DIR, 'logs/meiduo.log'),  # Log file location
             'maxBytes': 300 * 1024 * 1024,
             'backupCount': 10,
             'formatter': 'verbose'
         },
     },
-    'loggers': {  # 日志器
-        'django': {  # 定义了一个名为django的日志器
-            'handlers': ['console', 'file'],  # 可以同时向终端与文件中输出日志
-            'propagate': True,  # 是否继续传递日志信息
-            'level': 'INFO',  # 日志器接收的最低日志级别
+    'loggers': {  # Loggers
+        'django': {  # Defines a logger named django
+            'handlers': ['console', 'file'],  # Output logs to both terminal and file
+            'propagate': True,  # Whether to continue passing log messages
+            'level': 'INFO',  # Minimum log level accepted by the logger
         },
     }
 }
 
 ##############################
-# 通过提供一个值给AUTH_USER_MODEL设置，指向自定义的模型，Django允许你覆盖默认的User模型：
-# 这个点式路径包含Django应用的名称（必须位于你的INSTALLED_APPS中），和要用作User模型的Django模型的名称。
+# By providing a value to AUTH_USER_MODEL that points to a custom model,
+# Django allows you to override the default User model.
+# This dotted path includes the Django app name (must be in INSTALLED_APPS)
+# and the Django model name to use as the User model.
 AUTH_USER_MODEL = 'users.User'
 
 #####CORS#######################
 
-# CORS  白名单
+# CORS whitelist
 CORS_ORIGIN_WHITELIST = (
     'http://127.0.0.1:8080',
     'http://localhost:8080',
     'http://www.meiduo.site:8080',
     'http://www.meiduo.site:8000'
 )
-CORS_ALLOW_CREDENTIALS = True  # 允许携带cookie
+CORS_ALLOW_CREDENTIALS = True  # Allow cookies to be included
