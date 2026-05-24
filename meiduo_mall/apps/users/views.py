@@ -45,14 +45,13 @@ from django.http import JsonResponse
 import re
 class UsernameCountView(View):
 
-def get(self, request, username):
-    # 1. Receive the username and validate it
-    # if not re.match('[a-zA-Z0-9_-]{5,20}', username):
-    #     return JsonResponse({'code': 200, 'errmsg': 'Username does not meet the requirements'})
+    def get(self, request, username):
+        # 1. Receive the username and validate it
+        # if not re.match('[a-zA-Z0-9_-]{5,20}', username):
+        #     return JsonResponse({'code': 200, 'errmsg': 'Username does not meet the requirements'})
 
-    # 2. Query the database based on the username
-    count = User.objects.filter(username=username).count()
+        # 2. Query the database based on the username
+        count = User.objects.filter(username=username).count()
 
-    # 3. Return the response
-    return JsonResponse({'code': 0, 'count': count, 'errmsg': 'ok'})
-
+        # 3. Return the response
+        return JsonResponse({'code': 0, 'count': count, 'errmsg': 'ok'})
