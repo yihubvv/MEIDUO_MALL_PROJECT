@@ -116,3 +116,7 @@ dmypy.json
 
 # pycharm .idea
 meiduo_mall/.idea/*
+
+.agents
+
+.codex
