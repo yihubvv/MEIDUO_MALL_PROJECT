@@ -13,14 +13,14 @@
     <div class="register_con">
         <div class="l_con fl">
             <a href="index.html" class="reg_logo"><img src="images/logo.png"></a>
-            <div class="reg_slogan">Best Products · Wide Variety · Welcome!</div>
+            <div class="reg_slogan">Welcome!</div>
             <div class="reg_banner"></div>
         </div>
 
         <div class="r_con fr">
             <div class="reg_title clearfix">
                 <h1>Registration</h1>
-                <a href="/login.html">Login</a>
+                <a href="/login.html" style="padding-right: 30px;">Sign In</a>
             </div>
             <div class="reg_form clearfix" id="app" v-cloak>
                  <form method="post" @submit.prevent="on_submit">
@@ -50,11 +50,11 @@
                             <label>Code:</label>
                             <input type="text" v-model="image_code" @blur="check_image_code" name="image_code"
                                    id="pic_code" class="msg_input">
-                            <img :src="image_code_url" @click="generate_image_code" alt="图形验证码" class="pic_code">
+                            <img :src="image_code_url" @click="generate_image_code" alt="code" class="pic_code">
                             <span v-show="error_image_code" class="error_tip">{{ error_image_code_message }}</span>
                         </li>
                         <li>
-                            <label>SMS Verification Code:</label>
+                            <label>SMS Code:</label>
                             <input type="text" v-model="sms_code" @blur="check_sms_code" name="sms_code" id="msg_code"
                                    class="msg_input">
                             <a @click="send_sms_code" class="get_msg_code">{{ sms_code_tip }}</a>
@@ -62,11 +62,11 @@
                         </li>
                         <li class="agreement">
                             <input v-model="allow" type="checkbox" name="allow" id="allow" >
-                            <label>Agree to the "Meiduo Mall User Agreement"</label>
+                            <label>Agree to User Agreement</label>
                             <span v-show="error_allow" class="error_tip">Please check the user agreement box</span>
                         </li>
                         <li class="reg_sub">
-                            <input type="submit" value="注 册">
+                            <input type="submit" value="Register">
                         </li>
                     </ul>
                 </form>
