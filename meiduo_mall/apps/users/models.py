@@ -15,6 +15,7 @@ from django.db import models
 
 from django.contrib.auth.models import AbstractUser
 
+# use the user model provided by the system, add info like mobile for the actual needs.
 class User(AbstractUser):
     mobile=models.CharField(max_length=11,unique=True)
 
