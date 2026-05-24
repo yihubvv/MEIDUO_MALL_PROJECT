@@ -660,7 +660,7 @@ html,body{height:100%}
 .login_form_bg{height:480px;background-color:#810101}
 .no-mp{margin-top:0px;}
 .login_form_wrap{width:1000px;height:480px;margin:0 auto;}
-.login_banner{width:500px;height:386px;background:url(../images/login_banner.png) no-repeat;margin-top:40px;}
+.login_banner{width:500px;height:386px;background:url(../images/login_banner.png) center bottom/contain no-repeat;margin-top:40px;}
 .slogan{width:30px;height:300px;font-size:24px;color:#f9dddd;text-align:center;line-height:30px;margin:65px 0 0 30px}
 .login_form{width:368px;height:378px;border:1px solid #c6c6c5;background-color:#fff; margin-top:50px;}
 
