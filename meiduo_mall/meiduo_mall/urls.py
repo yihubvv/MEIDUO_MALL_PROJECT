@@ -47,4 +47,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # Import the routes from the users application
     path('',include('apps.users.urls')),
+    path('',include('apps.verification.urls')),
 ]
