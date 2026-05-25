@@ -55,3 +55,12 @@ class UsernameCountView(View):
 
         # 3. Return the response
         return JsonResponse({'code': 0, 'count': count, 'errmsg': 'ok'})
+
+class RegisterView(View):
+
+    def post(self, request:Http):
+        req = request
+        count = User.objects.filter(username=username).count()
+
+        # 3. Return the response
+        return JsonResponse({'code': 0, 'count': count, 'errmsg': 'ok'})
