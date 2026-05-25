@@ -1,3 +1,5 @@
+from math import log
+
 from django.shortcuts import render
 
 # Create your views here.
@@ -63,6 +65,7 @@ class MobileView(View):
         return JsonResponse({'code': 0, 'count': count, 'errmsg': 'ok'})
     
 import json
+from django.contrib.auth import login
 class RegisterView(View):
 
     def post(self, request:HttpRequest):
@@ -99,5 +102,8 @@ class RegisterView(View):
         if not (password == password2):
             return JsonResponse({'code':400, 'errmsg':'Passwords do not match.'})
         
-        User.objects.create_user(username=username_req, password=password, mobile=mobile)
+        user = User.objects.create_user(username=username_req, password=password, mobile=mobile)
+
+        login(request,user)
+        
         return JsonResponse({'code':0, 'errmsg':'Success'})
