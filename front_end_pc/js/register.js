@@ -15,9 +15,9 @@ var vm = new Vue({
         error_image_code:'',
 
         sms_code_tip: 'Get SMS Code',
-        sending_flag: false, // 正在发送短信标志
+        sending_flag: false, // Sending SMS flag
 
-        // 图形验证码:
+        // Image Verification Code:
         image_code_id: '',
         image_code_url: '',
 
@@ -31,18 +31,18 @@ var vm = new Vue({
         error_image_code_message:''
     },
     mounted: function(){
-		// 向服务器获取图片验证码
+		// Get the image verification code from the server.
 		this.generate_image_code();
 	},
     methods: {
-        // 生成一个图片验证码的编号，并设置页面中图片验证码img标签的src属性
+        //Generate an image verification code ID and set the `src` attribute of the image captcha `img` tag on the page.
 		generate_image_code: function(){
-			// 生成一个编号 : 严格一点的使用uuid保证编号唯一， 不是很严谨的情况下，也可以使用时间戳
+			// Generate an ID: For stricter uniqueness, use `UUID` to ensure the ID is unique. In less strict situations, a timestamp can also be used.
 			this.image_code_id = generateUUID();
-			// 设置页面中图片验证码img标签的src属性
+			// Set the `src` attribute of the image captcha `img` tag on the page.
 			this.image_code_url = this.host + "/image_codes/" + this.image_code_id + "/";
 		},
-        // 检查用户名
+        // Check username.
         check_username: function () {
             var re = /^[a-zA-Z0-9_-]{5,20}$/;
             var re2 = /^[0-9]+$/;
@@ -52,10 +52,10 @@ var vm = new Vue({
                 this.error_name_message = 'Use 5-20 letters, numbers, underscores, or hyphens.';
                 this.error_name = true;
             }
-            // 检查重名
+            // Check for duplicate usernames.
             if (this.error_name == false) {
                 var url = this.host + '/usernames/' + this.username + '/count/';
-                // vue 如何发送 ajax 请求呢？axios 
+                // How does Vue send AJAX requests? Using `axios`. 
                 axios.get(url, {
                     responseType: 'json',
                     withCredentials:true,
@@ -88,7 +88,7 @@ var vm = new Vue({
                 this.error_check_password = false;
             }
         },
-        // 检查手机号
+        // Check phone number.
         check_phone: function () {
             var re = /^1[345789]\d{9}$/;
 
@@ -117,7 +117,7 @@ var vm = new Vue({
                     })
             }
         },
-        // 检查图片验证码
+        // Check image verification code.
 		check_image_code: function (){
 			if(!this.image_code) {
 				this.error_image_code_message = 'Please enter the image code.';
@@ -141,14 +141,14 @@ var vm = new Vue({
                 this.error_allow = false;
             }
         },
-        // 发送手机短信验证码
+        // Send SMS verification code.
         send_sms_code: function () {
             if (this.sending_flag == true) {
                 return;
             }
             this.sending_flag = true;
 
-            // 校验参数，保证输入框有数据填写
+            // Validate the parameters to ensure the input fields contain data.
             this.check_phone();
 
             if (this.error_phone == true) {
@@ -156,7 +156,7 @@ var vm = new Vue({
                 return;
             }
 
-            // 向后端接口发送请求，让后端发送短信验证码
+            // Send a request to the backend API and let the backend send the SMS verification code.
             var url = this.host + '/sms_codes/' + this.mobile + '/' + '?image_code=' + this.image_code
                 + '&image_code_id=' + this.image_code_id
             axios.get(url, {
@@ -164,21 +164,22 @@ var vm = new Vue({
                 withCredentials:true,
             })
                 .then(response => {
-                    // 表示后端发送短信成功
-                    // 倒计时60秒，60秒后允许用户再次点击发送短信验证码的按钮
+                    // Indicates that the backend successfully sent the SMS message
+                    // Start a 60-second countdown.
+                    // After 60 seconds, allow the user to click the button to send the SMS verification code again.                    
                     var num = 60;
-                    // 设置一个计时器
+                    // Set a timer                    
                     var t = setInterval(() => {
                         if (num == 1) {
-                            // 如果计时器到最后, 清除计时器对象
+                            // If the timer reaches the end, clear the timer object                            
                             clearInterval(t);
-                            // 将点击获取验证码的按钮展示的文本回复成原始文本
+                            // Restore the original text displayed on the "Get Verification Code" button                            
                             this.sms_code_tip = 'Get SMS Code';
-                            // 将点击按钮的onclick事件函数恢复回去
+                            // Restore the onclick event function of the button                            
                             this.sending_flag = false;
                         } else {
                             num -= 1;
-                            // 展示倒计时信息
+                            // Display the countdown information                            
                             this.sms_code_tip = num + 's';
                         }
                     }, 1000, 60)
@@ -193,7 +194,7 @@ var vm = new Vue({
                     this.sending_flag = false;
                 })
         },
-        // 注册
+        // Registration
         on_submit: function () {
             this.check_username();
             this.check_pwd();
@@ -204,7 +205,8 @@ var vm = new Vue({
 
 
 
-            // 点击注册按钮之后, 发送请求 (下面的代码是通过请求体传参的)
+            // After clicking the register button, send a request
+            // (The following code passes parameters through the request body)            
             if (this.error_name == false && this.error_password == false && this.error_check_password == false
                 && this.error_phone == false && this.error_sms_code == false && this.error_allow == false) {
                 axios.post(this.host + '/register/', {
