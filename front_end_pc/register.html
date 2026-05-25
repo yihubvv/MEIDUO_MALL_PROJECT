@@ -44,7 +44,7 @@
                         <li>
                             <label>Phone:</label>
                             <input @blur="check_phone" v-model="mobile" type="text" name="mobile" id="phone">
-                            <span v-show="error_phone" class="error_tip">Please enter a valid phone number.</span>
+                            <span v-show="error_phone" class="error_tip">{{ error_phone_message }}</span>
                         </li>
                         <li>
                             <label>Code:</label>

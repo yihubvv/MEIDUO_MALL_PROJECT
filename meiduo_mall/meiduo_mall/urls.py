@@ -36,10 +36,12 @@ from django.urls.converters import get_converters
 #     return HttpResponse('log')
 
 # Register converter
-from utils.converters import UsernameConverter
+from utils.converters import UsernameConverter, MobileConverter
 
 if 'username' not in get_converters():
     register_converter(UsernameConverter, 'username')
+
+register_converter(MobileConverter, 'mobile')
 
 urlpatterns = [
     path('admin/', admin.site.urls),

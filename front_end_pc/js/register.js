@@ -90,9 +90,12 @@ var vm = new Vue({
         },
         // Check phone number.
         check_phone: function () {
-            var re = /^1[345789]\d{9}$/;
+            var mobile = this.mobile.trim();
+            var re = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
 
-            if (re.test(this.mobile)) {
+            if (re.test(mobile)) {
+                this.mobile = mobile.replace(/\D/g, '');
+                this.error_phone_message = '';
                 this.error_phone = false;
             } else {
                 this.error_phone_message = 'Please enter a valid phone number.';
