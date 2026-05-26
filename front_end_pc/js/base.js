@@ -9,35 +9,30 @@ var vm = new Vue({
 });
 
 
-
-
-
-
-
-
-
-
 // $(function () {
-//     // 设置状态保持的用户名
+//     // Set the username for session persistence
 //     set_username();
 // });
 //
-// // 设置状态保持的用户名
+// // Set the username for session persistence
 // function set_username() {
-// 	// 读取用户状态保持信息
-// 	var username = getCookie('username');
-// 	var $username;
-// 	if (username) {
-// 		$username =
-// 			"欢迎您：<em>"+ username +"</em>\n" +
-//             "\t\t\t\t\t<span>|</span>\n" +
-//             "\t\t\t\t\t<a href='/logout/'>退出</a>";
+//     // Read the user's session persistence information
+//     var username = getCookie('username');
+//     var $username;
 //
-// 		$('.login_btn').append($username);
-// 	} else {
-// 		$username = "<a href='/login/'>登录</a>\n" +
+//     if (username) {
+//         $username =
+//             "Welcome, <em>" + username + "</em>\n" +
 //             "\t\t\t\t\t<span>|</span>\n" +
-//             "\t\t\t\t\t<a href='/register/'>注册</a>";
-// 		$('.login_btn').append($username);
-// 	}
+//             "\t\t\t\t\t<a href='/logout/'>Logout</a>";
+//
+//         $('.login_btn').append($username);
+//     } else {
+//         $username =
+//             "<a href='/login/'>Login</a>\n" +
+//             "\t\t\t\t\t<span>|</span>\n" +
+//             "\t\t\t\t\t<a href='/register/'>Register</a>";
+//
+//         $('.login_btn').append($username);
+//     }
 // }
