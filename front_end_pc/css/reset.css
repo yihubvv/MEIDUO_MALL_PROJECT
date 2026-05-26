@@ -1,27 +1,55 @@
-/* 把标签默认的间距设为0 */
-body,ul,ol,p,h1,h2,h3,h4,h5,h6,dl,dd,select,input,textarea,form{margin:0;padding:0}
+/* Reset default margins and padding for common elements */
+body, ul, ol, p, h1, h2, h3, h4, h5, h6, dl, dd, select, input, textarea, form {
+    margin: 0;
+    padding: 0;
+}
 
-/* 让h标签文字大小继承body的文字设置 */
-h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}
+/* Make heading font sizes inherit from the body settings */
+h1, h2, h3, h4, h5, h6 {
+    font-size: 100%;
+    font-weight: normal;
+}
 
-/* 去掉列表默认的图标 */
-ul,ol{list-style:none;}
+/* Remove default list bullets/numbers */
+ul, ol {
+    list-style: none;
+}
 
-/* 去掉em默认的斜体 */
-em{font-style: normal;}
+/* Remove the default italic style from <em> */
+em {
+    font-style: normal;
+}
 
-/* 去掉a标签默认的下划线 */
-a{text-decoration:none;}
+/* Remove the default underline from links */
+a {
+    text-decoration: none;
+}
 
+/* Remove the border around linked images */
+img {
+    border: 0;
+}
 
-/* 去掉加链接时产生的框线 */
-img{border:0;}
+/* Clear floats */
+.clearfix:before,
+.clearfix:after {
+    content: "";
+    display: table;
+}
 
-/* 清除浮动 */
-.clearfix:before,.clearfix:after{content:"";display:table}
-.clearfix:after{clear:both;}
-.clearfix{zoom:1}
+.clearfix:after {
+    clear: both;
+}
 
-/* 浮动 */
-.fl{float:left}
-.fr{float:right}
+.clearfix {
+    zoom: 1;
+}
+
+/* Float utilities */
+.fl {
+    float: left;
+}
+
+.fr {
+    float: right;
+}

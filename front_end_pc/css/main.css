@@ -1,6 +1,6 @@
 body{font-family:'Microsoft Yahei';font-size:12px;color:#666;}
 html,body{height:100%}
-/* 顶部样式 */
+/* Top Styles */
 .header_con{
 	background-color:#f7f7f7;
 	height:29px;
@@ -46,7 +46,7 @@ html,body{height:100%}
 }
 
 
-/* logo、搜索框、购物车样式 */
+/* Logo, Search Box, and Shopping Cart Styles */
 
 .search_bar{width:1200px;height:115px;margin:0 auto;}
 .logo{width:150px;height:59px;margin:29px 0 0 17px;}
@@ -145,7 +145,7 @@ html,body{height:100%}
 	font-size:13px;
 	margin-right:20px;
 }
-/* 菜单、幻灯片样式 */
+/* Menu and Slideshow Styles */
 
 .navbar_con{height:30px;border-bottom:1px solid #ddd;background:#f9f9f9}
 .navbar{width:1200px;margin:0 auto;}
@@ -336,7 +336,7 @@ html,body{height:100%}
 
 
 
-/* 商品列表样式 */
+/* Product List Styles */
 
 .list_model{width:1200px;height:491px;margin:15px auto 0;}
 .list_title{height:40px;border-bottom:1px solid #719ef7}
@@ -420,7 +420,8 @@ html,body{height:100%}
 	text-decoration:underline;
 }
 
-/* 页面底部样式 */
+/* Page Footer Styles */
+
 .footer{
 	border-top:1px solid #fe0000;
 	margin:30px 0;
@@ -433,7 +434,7 @@ html,body{height:100%}
 .footer p{text-align:center; margin-top:10px;}
 
 
-/* 二级页面面包屑导航 */
+/* Breadcrumb Navigation for Secondary Pages */
 .breadcrumb{
 	width:1200px;height:40px;margin:0 auto;
 }
@@ -447,7 +448,7 @@ html,body{height:100%}
 .r_wrap{width:980px;}
 
 
-/* 新品推荐样式 */
+/* New Arrivals Recommendation Styles */
 
 .new_goods{
 	border:1px solid #ededed;
@@ -563,7 +564,7 @@ html,body{height:100%}
 
 
 
-/* 商品列表样式 */
+/* Product List Styles */
 
 .sort_bar{height:30px;background-color:#fbf3f3}
 .sort_bar a{display:block;height:30px;line-height:30px;padding:0 20px;float:left;color:#000}
@@ -590,7 +591,7 @@ html,body{height:100%}
 .goods_type_list .operate .add_goods{display:inline-block;width:15px;height:15px;background:url(../images/shop_cart.png);position:absolute;right:0;top:3px;}
 
 
-/* 分页样式 */
+/* Pagination Styles */
 
 .pagenation{height:32px;text-align:center;font-size:0;margin:30px auto;}
 .pagenation a{display:inline-block;border:1px solid #d2d2d2;background-color:#f8f6f7;font-size:12px;padding:5px 10px;color:#666;margin:5px}
@@ -598,7 +599,7 @@ html,body{height:100%}
 .pagenation .active{background-color:#fff;color:#43a200}
 
 
-/* 商品详情样式 */
+/* Product Details Styles */
 .goods_detail_con{
 	width:1198px;
 	border:1px solid #ededed;
@@ -654,7 +655,7 @@ html,body{height:100%}
 .tab_content dd{line-height:24px;margin-top:5px;}
 
 
-/* 登录页 */
+/* Login Page */
 .login_top{width:960px;height:130px;margin:0 auto;}
 .login_logo{display:block;width:193px;height:76px;margin-top:30px;}
 .login_form_bg{height:480px;background-color:#810101}
@@ -698,7 +699,7 @@ html,body{height:100%}
 .input_submit{width:100%;height:40px;position:absolute;left:0;top:180px;background-color:#ff5757;color:#fff;font-size:22px;border:0px;font-family:'Microsoft Yahei';cursor:pointer;}
 
 
-/* 注册页面 */
+/* Registration Page */
 .register_con{
 	width:860px;
 	overflow: hidden;
@@ -1525,7 +1526,7 @@ html,body{height:100%}
 
 
 
-/*  确认弹框 */
+/* Confirmation Dialog */
 .pop_con2{
 	display:none;
 }
@@ -1587,17 +1588,17 @@ html,body{height:100%}
 	margin-left:30px;
 }
 
-/*收货地址错误提示*/
+/* Shipping Address Error Message */
 .receiver_error,.mobile_error,.place_error,.tel_error,.email_error {
 	color:#f00;margin-left:5px;
 }
 
-/*修改密码错误提示*/
+/* Change Password Error Message */
 .old_pwd_error,.new_pwd_error,.new_cpwd_error {
 	color:#f00;margin-left:5px;
 }
 
-/*修改分页插件样式*/
+/* Customize Pagination Plugin Styles */
 .ui-pagination-container {
 	line-height: 20px;
 }
@@ -1607,7 +1608,7 @@ html,body{height:100%}
 	border-color: #f80000;
 }
 
-/*详情页添加数量提示样式*/
+/* Product Detail Page Quantity Prompt Styles */
 .overtip{
 	width:92px;
 	height:25px;
