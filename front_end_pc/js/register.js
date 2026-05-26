@@ -170,6 +170,7 @@ var vm = new Vue({
                     if(response.data==400){
                         this.error_sms_code = true;
                         this.error_sms_code_message = response.data.errmsg;
+                        return;
                     }
                     // Indicates that the backend successfully sent the SMS message
                     // Start a 60-second countdown.

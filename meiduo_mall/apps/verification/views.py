@@ -32,8 +32,14 @@ class SMSCodeView(View):
       return JsonResponse({'code':400,'errmsg':'SMS sent repeatedly.'})
     from random import randint
     sms_code = '%06d'%randint(0,999999)
-    redis_cli.setex(mobile,300,sms_code)
-    redis_cli.setex('send_flag_%s'%mobile,60,1)
+
+# higher performance.
+    pipeline = redis_cli.pipeline()
+
+    pipeline.setex(mobile,300,sms_code)
+    pipeline.setex('send_flag_%s'%mobile,60,1)
+
+    pipeline.execute()
     
     from libs.yuntongxun.sms import CCP
     CCP().send_template_sms(mobile,[sms_code,5],1)
