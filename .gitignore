@@ -117,8 +117,9 @@ dmypy.json
 # pycharm .idea
 meiduo_mall/.idea/*
 
+# VS Code
+.vscode/
+
 .agents
 
 .codex
-
-.vscode
