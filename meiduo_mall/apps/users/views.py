@@ -118,6 +118,11 @@ class LoginView(View):
         if not all([v_username,v_password]):
             return JsonResponse({'code':400,'errmsg':'Incomplete Data.'})
         
+        if(re.match(r'^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$', v_username)):
+            User.USERNAME_FIELD = 'mobile'
+        else:
+            User.USERNAME_FIELD = 'username'
+
         user = authenticate(username=v_username,password=v_password)
 
         if(user == None):
