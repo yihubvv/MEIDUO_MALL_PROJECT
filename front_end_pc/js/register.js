@@ -167,6 +167,10 @@ var vm = new Vue({
                 withCredentials:true,
             })
                 .then(response => {
+                    if(response.data==400){
+                        this.error_sms_code = true;
+                        this.error_sms_code_message = response.data.errmsg;
+                    }
                     // Indicates that the backend successfully sent the SMS message
                     // Start a 60-second countdown.
                     // After 60 seconds, allow the user to click the button to send the SMS verification code again.                    

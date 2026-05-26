@@ -19,6 +19,7 @@ class SMSCodeView(View):
     uuid = request.get('image_code_id')
     if not all([image_code,uuid]):
       return JsonResponse({'code':400,'errmsg':'incomplete input'})
+    
     redis_cli = get_redis_connection('code')
     redis_image_code=redis_cli.get(uuid)
     if(redis_image_code is None):
@@ -26,9 +27,13 @@ class SMSCodeView(View):
     if(redis_image_code.decode().lower() != image_code.lower()):
       return JsonResponse({'code':400,'errmsg':'Code mismatched'})
     
+    send_flag=redis_cli.get('send_flag_%s'%mobile)
+    if send_flag is not None:
+      return JsonResponse({'code':400,'errmsg':'SMS sent repeatedly.'})
     from random import randint
     sms_code = '%06d'%randint(0,999999)
     redis_cli.setex(mobile,300,sms_code)
+    redis_cli.setex('send_flag_%s'%mobile,60,1)
     
     from libs.yuntongxun.sms import CCP
     CCP().send_template_sms(mobile,[sms_code,5],1)
