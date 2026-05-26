@@ -136,5 +136,5 @@ class LoginView(View):
             request.session.set_expiry(0)
         
         response = JsonResponse({'code':0,'errmsg':'OK'})
-        response.set_cookie('username',v_username)
+        response.set_cookie('username', v_username, path='/')
         return response
