@@ -23,7 +23,7 @@ class SMSCodeView(View):
     redis_image_code=redis_cli.get(uuid)
     if(redis_image_code is None):
       return JsonResponse({'code':400,'errmsg':'SMS code expired'})
-    if(redis_image_code != image_code):
+    if(redis_image_code.decode().lower() != image_code.lower()):
       return JsonResponse({'code':400,'errmsg':'Code mismatched'})
     
     from random import randint
