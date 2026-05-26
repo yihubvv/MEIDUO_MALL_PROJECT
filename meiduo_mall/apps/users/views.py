@@ -146,3 +146,8 @@ class LogoutView(View):
         response = JsonResponse({'code':0,'errmsg':'OK'})
         response.delete_cookie('username')
         return response
+
+from utils.view import LoginRequiredJsonMixin
+class CenterView(LoginRequiredJsonMixin, View):
+    def get(self, request):
+        return JsonResponse({'code':0,'errmsg':'OK'})

@@ -41,7 +41,8 @@ from utils.converters import UsernameConverter, MobileConverter
 if 'username' not in get_converters():
     register_converter(UsernameConverter, 'username')
 
-register_converter(MobileConverter, 'mobile')
+if 'mobile' not in get_converters():
+    register_converter(MobileConverter, 'mobile')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
