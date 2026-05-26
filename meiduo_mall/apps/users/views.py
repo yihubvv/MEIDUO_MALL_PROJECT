@@ -65,7 +65,7 @@ class MobileView(View):
         return JsonResponse({'code': 0, 'count': count, 'errmsg': 'ok'})
     
 import json
-from django.contrib.auth import login
+from django.contrib.auth import login,authenticate
 class RegisterView(View):
 
     def post(self, request:HttpRequest):
@@ -107,3 +107,27 @@ class RegisterView(View):
         login(request,user)
         
         return JsonResponse({'code':0, 'errmsg':'Success'})
+    
+class LoginView(View):
+    def post(self,request:HttpRequest):
+        data = json.loads(request.body.decode())
+        v_username = data['username']
+        v_password = data['password']
+        v_remembered = data['remembered']
+
+        if not all([v_username,v_password]):
+            return JsonResponse({'code':400,'errmsg':'Incomplete Data.'})
+        
+        user = authenticate(username=v_username,password=v_password)
+
+        if(user == None):
+            return JsonResponse({'code':400,'errmsg':'Incorrect Username/Password.'})
+
+        login(request,user)
+
+        if(v_remembered != None):
+            request.session.set_expiry(None)
+        else:
+            request.session.set_expiry(0)
+        
+        return JsonResponse({'code':0,'errmsg':'OK'})
