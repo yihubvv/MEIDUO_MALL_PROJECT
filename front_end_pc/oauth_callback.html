@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <title>美多商城-绑定用户</title>
+    <title>Meiduo Mall - Bind User</title>
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <script type="text/javascript" src="js/host.js"></script>
@@ -11,42 +11,42 @@
 </head>
 <body>
     <div id="app">
-        <div v-if="is_show_waiting" class="pass_change_finish">请稍后...</div>
+        <div v-if="is_show_waiting" class="pass_change_finish">Please wait...</div>
         <div v-else>
             <div class="register_con">
                 <div class="l_con fl">
                     <a href="index.html" class="reg_logo"><img src="images/logo.png"></a>
-                    <div class="reg_slogan">商品美 · 种类多 · 欢迎光临</div>
+                    <div class="reg_slogan">Welcome!</div>
                     <div class="reg_banner"></div>
                 </div>
 
                 <div class="r_con fr">
                     <div class="reg_title clearfix">
-                        <h1>绑定用户</h1>
+                        <h1>Bind User</h1>
                     </div>
                     <div class="reg_form clearfix" v-cloak>
                         <form id="reg_form" @submit.prevent="on_submit">
                             <input v-model="access_token" type="hidden" name="access_token">
                         <ul>
                             <li>
-                                <label>手机号:</label>
+                                <label>Phone:</label>
                                 <input type="text" v-model="mobile" @blur="check_phone" name="phone" id="phone">
                                 <span v-show="error_phone" class="error_tip">{{ error_phone_message }}</span>
                             </li>
                             <li>
-                                <label>密码:</label>
+                                <label>Password:</label>
                                 <input type="password" v-model="password" @blur="check_pwd" name="pwd" id="pwd">
-                                <span v-show="error_password" class="error_tip">密码最少8位，最长20位</span>
+                                <span v-show="error_password" class="error_tip">Password should be 8-20 characters.</span>
                             </li>
                              <li>
-                                <label>图形验证码:</label>
+                                <label>Captcha:</label>
                                 <input type="text" v-model="image_code" @blur="check_image_code" name="image_code"
                                        id="pic_code" class="msg_input">
-                                <img :src="image_code_url" @click="generate_image_code" alt="图形验证码" class="pic_code">
+                                <img :src="image_code_url" @click="generate_image_code" alt="Captcha" class="pic_code">
                                 <span v-show="error_image_code" class="error_tip">{{ error_image_code_message }}</span>
                             </li>
                             <li>
-                                <label>短信验证码:</label>
+                                <label>SMS Code:</label>
                                 <input type="text" v-model="sms_code" @blur="check_sms_code" name="msg_code" id="msg_code" class="msg_input">
                                 <a @click="send_sms_code" class="get_msg_code">{{ sms_code_tip }}</a>
                                 <span v-show="error_sms_code" class="error_tip">{{ error_sms_code_message }}</span>
@@ -62,16 +62,16 @@
 
             <div class="footer no-mp">
                 <div class="foot_link">
-                    <a href="#">关于我们</a>
+                    <a href="#">About Us</a>
                     <span>|</span>
-                    <a href="#">联系我们</a>
+                    <a href="#">Contact Us</a>
                     <span>|</span>
-                    <a href="#">招聘人才</a>
+                    <a href="#">Careers</a>
                     <span>|</span>
-                    <a href="#">友情链接</a>
+                    <a href="#">Links</a>
                 </div>
-                <p>CopyRight © 2016 北京美多商业股份有限公司 All Rights Reserved</p>
-                <p>电话：010-****888    京ICP备*******8号</p>
+                <p>Copyright © 2016 Beijing Meiduo Commerce Co., Ltd. All Rights Reserved</p>
+                <p>Phone: 010-****888    Beijing ICP License No. *******8</p>
             </div>
         </div>
     </div>
