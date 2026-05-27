@@ -1,3 +1,5 @@
+var site_url = 'http://www.meiduo.site:8080';
+
 var vm = new Vue({
     el: '#app',
     data: {
@@ -24,6 +26,11 @@ var vm = new Vue({
         image_code_url:''
     },
     mounted: function(){
+        if (window.location.hostname == 'localhost' || window.location.hostname == '127.0.0.1') {
+            location.replace(site_url + window.location.pathname + window.location.search + window.location.hash);
+            return;
+        }
+
         // get captcha:
         this.generate_image_code()
 
@@ -38,7 +45,7 @@ var vm = new Vue({
                 if (response.data.code == 0){
                     // Connected account
                     var state = this.get_query_string('state');
-                    location.href = 'http://localhost:8080/';
+                    location.href = site_url + '/';
                 } else {
                     // Account not aonnected
                     this.access_token = response.data.access_token;
@@ -171,7 +178,7 @@ var vm = new Vue({
                     })
                     .then(response => {
 // Record the user's login status
-                        location.href = 'http://localhost:8080/'
+                        location.href = site_url + '/'
                     })
                     .catch(error=> {
                         if (error.response.status == 400) {
