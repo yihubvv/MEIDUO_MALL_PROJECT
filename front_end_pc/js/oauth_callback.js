@@ -10,8 +10,8 @@ var vm = new Vue({
         error_phone_message: '',
         error_sms_code_message: '',
 
-        sms_code_tip: '获取短信验证码',
-        sending_flag: false, // 正在发送短信标志
+        sms_code_tip: 'Get SMS',
+        sending_flag: false, // Flag indicating that an SMS is currently being sent
 
         password: '',
         mobile: '',
@@ -24,11 +24,11 @@ var vm = new Vue({
         image_code_url:''
     },
     mounted: function(){
-        // 获取图形验证码:
+        // get captcha:
         this.generate_image_code()
 
 
-        // 从路径中获取qq重定向返回的code
+        //Get the code returned by the QQ redirect from the URL path
         var code = this.get_query_string('code');
         axios.get(this.host + '/oauth_callback/?code=' + code, {
                 responseType: 'json',
@@ -36,30 +36,30 @@ var vm = new Vue({
             })
             .then(response => {
                 if (response.data.code == 0){
-                    // 用户已绑定
+                    // Connected account
                     var state = this.get_query_string('state');
                     location.href = 'http://localhost:8080/';
                 } else {
-                    // 用户未绑定
+                    // Account not aonnected
                     this.access_token = response.data.access_token;
                     this.is_show_waiting = false;
                 }
             })
             .catch(error => {
                 console.log(error.response.data);
-                alert('服务器异常');
+                alert('error');
             })
     },
     methods: {
-              // 生成一个图片验证码的编号，并设置页面中图片验证码img标签的src属性
+              //Generate an image captcha ID and set the src attribute of the image captcha <img> element on the page
 		generate_image_code: function(){
-			// 生成一个编号 : 严格一点的使用uuid保证编号唯一， 不是很严谨的情况下，也可以使用时间戳
-			this.image_code_id = generateUUID();
-			// 设置页面中图片验证码img标签的src属性
+// Generate an ID: For strict uniqueness, use a UUID. In less strict scenarios, a timestamp can also be used.			
+            this.image_code_id = generateUUID();
+// Set the src attribute of the image captcha <img> element on the page.
 			this.image_code_url = this.host + "/image_codes/" + this.image_code_id + "/";
 		},
-        // 获取url路径参数
-        get_query_string: function(name){
+// Get URL path parameters
+            get_query_string: function(name){
             var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
             var r = window.location.search.substr(1).match(reg);
             if (r != null) {
@@ -76,39 +76,36 @@ var vm = new Vue({
             }
         },
         check_phone: function (){
-            var re = /^1[345789]\d{9}$/;
+            var re = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
             if(re.test(this.mobile)) {
                 this.error_phone = false;
             } else {
-                this.error_phone_message = '您输入的手机号格式不正确';
+                this.error_phone_message = 'Bad Phone Format';
                 this.error_phone = true;
             }
         },
         check_sms_code: function(){
             if(!this.sms_code){
-                this.error_sms_code_message = '请填写短信验证码';
+                this.error_sms_code_message = 'Please Enter SMS';
                 this.error_sms_code = true;
             } else {
                 this.error_sms_code = false;
             }
         },
-        // 检查图片验证码
 		check_image_code: function (){
 			if(!this.image_code) {
-				this.error_image_code_message = '请填写图片验证码';
+				this.error_image_code_message = 'Pleases Enter Captcha.';
 				this.error_image_code = true;
 			} else {
 				this.error_image_code = false;
 			}
 		},
-        // 发送手机短信验证码
         send_sms_code: function(){
             if (this.sending_flag == true) {
                 return;
             }
             this.sending_flag = true;
 
-            // 校验参数，保证输入框有数据填写
             this.check_phone();
 
             if (this.error_phone == true) {
@@ -116,9 +113,9 @@ var vm = new Vue({
                 return;
             }
 
-            // 向后端接口发送请求，让后端发送短信验证码
-            // var url = this.host + '/sms_codes/' + this.mobile + '/'
-            // 向后端接口发送请求，让后端发送短信验证码
+// Send a request to the backend API and let the backend send the SMS verification code
+// var url = this.host + '/sms_codes/' + this.mobile + '/'
+// Send a request to the backend API and let the backend send the SMS verification code
             var url = this.host + '/sms_codes/' + this.mobile + '/' + '?image_code=' + this.image_code
                 + '&image_code_id=' + this.image_code_id
             axios.get(url, {
@@ -126,28 +123,29 @@ var vm = new Vue({
                     withCredentials:true,
                 })
                 .then(response => {
-                    // 表示后端发送短信成功
-                    // 倒计时60秒，60秒后允许用户再次点击发送短信验证码的按钮
+// Indicates that the backend successfully sent the SMS verification code
+// Start a 60-second countdown.
+// After 60 seconds, allow the user to click the "Send SMS Verification Code" button again.
                     var num = 60;
-                    // 设置一个计时器
+                    // Set a timer
                     var t = setInterval(() => {
                         if (num == 1) {
-                            // 如果计时器到最后, 清除计时器对象
+                            // If the countdown reaches the end, clear the timer object
                             clearInterval(t);
-                            // 将点击获取验证码的按钮展示的文本回复成原始文本
-                            this.sms_code_tip = '获取短信验证码';
-                            // 将点击按钮的onclick事件函数恢复回去
+                            // Restore the original text displayed on the "Get Verification Code" button
+                            this.sms_code_tip = 'Get SMS';
+                            // Restore the button's onclick event handler
                             this.sending_flag = false;
                         } else {
                             num -= 1;
-                            // 展示倒计时信息
-                            this.sms_code_tip = num + '秒';
+                            // Display the countdown information
+                            this.sms_code_tip = num + 's';
                         }
                     }, 1000, 60)
                 })
                 .catch(error => {
                     if (error.response.status == 400) {
-                        this.error_sms_code = '图片验证码有误';
+                        this.error_sms_code = 'Captcha does not match.';
                         this.error_sms_code_message = true;
                     } else {
                         console.log(error.response.data);
@@ -155,7 +153,7 @@ var vm = new Vue({
                     this.sending_flag = false;
                 })
         },
-       // 保存
+       // save
         on_submit: function(){
             this.check_pwd();
             this.check_phone();
@@ -172,7 +170,7 @@ var vm = new Vue({
                         withCredentials:true,
                     })
                     .then(response => {
-                        // 记录用户登录状态
+// Record the user's login status
                         location.href = 'http://localhost:8080/'
                     })
                     .catch(error=> {
