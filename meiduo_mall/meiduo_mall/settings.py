@@ -40,8 +40,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'apps.users',
+    'apps.verification',
     # CORS
     'corsheaders',
+    'apps.oauth',
 ]
 
 MIDDLEWARE = [
