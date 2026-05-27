@@ -49,4 +49,5 @@ urlpatterns = [
     # Import the routes from the users application
     path('',include('apps.users.urls')),
     path('',include('apps.verification.urls')),
+    path('',include('apps.oauth.urls')),
 ]
