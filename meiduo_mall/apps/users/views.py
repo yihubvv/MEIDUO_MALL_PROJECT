@@ -150,6 +150,7 @@ class LogoutView(View):
 from utils.view import LoginRequiredJsonMixin
 class CenterView(LoginRequiredJsonMixin, View):
     def get(self, request):
+        # get request.user by using the middleware in setting
         info_data = {
             'username':request.user.username,
             'email':request.user.email,
