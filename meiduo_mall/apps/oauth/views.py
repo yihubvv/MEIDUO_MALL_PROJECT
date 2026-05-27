@@ -18,6 +18,7 @@ from django.contrib.auth import login
 import json
 import re
 from apps.users.models import User
+from apps.oauth.utils import generic_open_id, decode_open_id
 
 class OauthQQView(View):
   def get(self, request:HttpRequest):
@@ -29,7 +30,8 @@ class OauthQQView(View):
                  redirect_uri=settings.QQ_REDIRECT_URI,
                  state='XXXXX')
     token = qq.get_access_token(code)
-    openid=qq.get_open_id(token)
+
+    openid=generic_open_id(qq.get_open_id(token))
 
     try:
       qquser=OAuthQQUser.objects.get(openid=openid)
@@ -49,6 +51,11 @@ class OauthQQView(View):
     v_sms_code=data.get('sms_code')
     v_open_id=data.get('access_token')
 
+    v_open_id = decode_open_id(v_open_id)
+
+    if(v_open_id is None):
+      return JsonResponse({'code': 400,'errmsg': 'Invalid Phone Number.'})
+    
     if not all([v_mobile, vpassword, v_sms_code]):
         return JsonResponse({'code': 400, 'errmsg': 'Incomplete data.'})
     
@@ -90,3 +97,4 @@ class OauthQQView(View):
     response = JsonResponse({'code':0,'errmsg':'OK'})
     response.set_cookie('username',user.username)
     return response
+
