@@ -225,3 +225,17 @@ QQ_CLIENT_ID = '101474184'
 QQ_CLIENT_SECRET = 'c6ce949e04e12ecc909ae6a8b09b637c'
 
 QQ_REDIRECT_URI = 'http://www.meiduo.site:8080/oauth_callback.html'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_TIMEOUT = 10
+
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+
+EMAIL_FROM = os.environ.get('EMAIL_FROM', 'MeiDuo Mall <>'.format(EMAIL_HOST_USER))

@@ -159,8 +159,10 @@ class CenterView(LoginRequiredJsonMixin, View):
         }
         return JsonResponse({'code':0,'errmsg':'OK','info_data':info_data})
 
+from django.conf import settings
 from django.core.mail import send_mail
 from apps.users.utils import generic_email_verify_token
+from celery_tasks.email.tasks import celery_send_email
 class EmailView(LoginRequiredJsonMixin, View):
     def put(self, request:HttpRequest):
         data = json.loads(request.body.decode())
@@ -174,17 +176,34 @@ class EmailView(LoginRequiredJsonMixin, View):
         
         token = generic_email_verify_token(request.user.id)
         subject = 'Testing message from MEI_DUO MALL'
-        url = 'http://www.meiduo.site:8080/?token=' + token
+        verify_url = 'http://www.meiduo.site:8080/success_verify_email.html?token=%s'%token
         message=''
-        html_message = 'Please Complete Registration By Clicking <a href='+ url + '>ACTIVATE</a>'
-        from_email = 'MeiDuo Mall <qi_rui_hua@163.com>'
+        html_message = '<p>Dear User,</p>' \
+               '<p>Thank you for using Meiduo Mall.</p>' \
+               '<p>Your email address is: %s. Please click the link below to verify your email:</p>' \
+               '<p><a href="%s">%s</a></p>' % (email, verify_url, verify_url)
+        from_email = settings.EMAIL_FROM
         recipient_list = [email]
-        send_mail(subject=subject,
-                  message=message,
-                  from_email=from_email,
-                  recipient_list=recipient_list,
-                  html_message=html_message)
+        celery_send_email.delay(
+                subject=subject,
+                message=message,
+                from_email=from_email,
+                recipient_list=recipient_list,
+                html_message=html_message)
+        
         return JsonResponse({'code':0,'errmsg':'OK'})
 
-
-
+from apps.users.utils import check_token
+class EmailVerifyView(View):
+    def put(self, request):
+        data = request.GET
+        token = data.get('token')
+        if(token is None):
+            return JsonResponse({'code':400, 'errmsg':'Incomplete data.'})
+        user_id = check_token(token)
+        if(user_id is None):
+            return JsonResponse({'code':400, 'errmsg':'Incomplete data.'})
+        user = User.objects.get(id=user_id)
+        user.email_active = True
+        user.save()
+        return JsonResponse({'code':0, 'errmsg':'OK'})
