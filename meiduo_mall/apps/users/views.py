@@ -158,3 +158,33 @@ class CenterView(LoginRequiredJsonMixin, View):
             'email_active':request.user.email_active
         }
         return JsonResponse({'code':0,'errmsg':'OK','info_data':info_data})
+
+from django.core.mail import send_mail
+from apps.users.utils import generic_email_verify_token
+class EmailView(LoginRequiredJsonMixin, View):
+    def put(self, request:HttpRequest):
+        data = json.loads(request.body.decode())
+        email = data.get('email')
+        if(re.match(r'^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$',email)):
+            user = request.user
+            user.email = email
+            user.save() 
+        else:
+            return JsonResponse({'code':400,'errmsg':'Invalid Email Format.'})
+        
+        token = generic_email_verify_token(request.user.id)
+        subject = 'Testing message from MEI_DUO MALL'
+        url = 'http://www.meiduo.site:8080/?token=' + token
+        message=''
+        html_message = 'Please Complete Registration By Clicking <a href='+ url + '>ACTIVATE</a>'
+        from_email = 'MeiDuo Mall <qi_rui_hua@163.com>'
+        recipient_list = [email]
+        send_mail(subject=subject,
+                  message=message,
+                  from_email=from_email,
+                  recipient_list=recipient_list,
+                  html_message=html_message)
+        return JsonResponse({'code':0,'errmsg':'OK'})
+
+
+
