@@ -97,4 +97,3 @@ class OauthQQView(View):
     response = JsonResponse({'code':0,'errmsg':'OK'})
     response.set_cookie('username',user.username)
     return response
-
