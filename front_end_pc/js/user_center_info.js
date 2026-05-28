@@ -8,21 +8,21 @@ var vm = new Vue({
         email_active: false,
         set_email: false,
         send_email_btn_disabled: false,
-        send_email_tip: '重新发送验证邮件',
+        send_email_tip: 'Resend Email',
         email_error: false,
         histories: [],
     },
     mounted: function () {
-        // 获取cookie中的用户名
+        // Get the username from the cookie        
         this.username = getCookie('username');
 
-        // 获取个人信息:
+        // Get personal information:        
         this.get_person_info()
 
         this.get_history()
     },
     methods: {
-          // 退出登录按钮
+        // Logout button          
         logoutfunc: function () {
             var url = this.host + '/logout/';
             axios.delete(url, {
@@ -37,7 +37,7 @@ var vm = new Vue({
                 })
         },
         get_history:function(){
-             // 添加下列代码, 发送请求, 获取用户的浏览记录信息:
+            // Add the following code to send a request and retrieve the user's browsing history information:
             axios.get(this.host + '/browse_histories/', {
                     responseType: 'json',
                     withCredentials:true,
@@ -52,7 +52,7 @@ var vm = new Vue({
                     console.log(error)
                 });
         },
-        // 获取用户所有的资料
+        // Get all user profile information        
         get_person_info: function () {
             var url = this.host + '/info/';
             axios.get(url, {
@@ -74,7 +74,7 @@ var vm = new Vue({
                     location.href = 'login.html'
                 })
         },
-        // 保存email
+        // save email
         save_email: function () {
             var re = /^[a-z0-9][\w\.\-]*@[a-z0-9\-]+(\.[a-z]{2,5}){1,2}$/;
             if (re.test(this.email)) {
@@ -84,7 +84,7 @@ var vm = new Vue({
                 return;
             }
 
-            // 进行前端页面请求:
+            // Make a frontend page request:            
             var url = this.host + '/emails/'
             axios.put(url,
                 {
@@ -94,15 +94,15 @@ var vm = new Vue({
                     responseType: 'json',
                     withCredentials:true,
                 })
-                // 成功请求的回调
+                // Callback function for a successful request                
                 .then(response => {
                     this.set_email = false;
                     this.send_email_btn_disabled = true;
-                    this.send_email_tip = '已发送验证邮件'
+                    this.send_email_tip = 'Email Sent'
                 })
-                // 失败请求的回调:
+                // Callback function for a failed request
                 .catch(error => {
-                    alert('请求失败, 失败原因:', error);
+                    alert('Failed Request:', error);
                 });
         }
     }
