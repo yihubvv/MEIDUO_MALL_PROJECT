@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'apps.oauth',
     'apps.goods',
+    'apps.contents',
 ]
 
 MIDDLEWARE = [
