@@ -240,3 +240,14 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 
 EMAIL_FROM = os.environ.get('EMAIL_FROM', 'MeiDuo Mall <>'.format(EMAIL_HOST_USER))
+
+FDFS_BASE_URL = 'http://image.meiduo.site:8888/'
+DEFAULT_FILE_STORAGE = 'utils.fastdfs.storage.MyStorage'
+STORAGES = {
+    'default': {
+        'BACKEND': DEFAULT_FILE_STORAGE,
+    },
+    'staticfiles': {
+        'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage',
+    },
+}
