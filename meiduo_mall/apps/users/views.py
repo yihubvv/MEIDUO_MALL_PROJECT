@@ -209,42 +209,62 @@ class EmailVerifyView(View):
         return JsonResponse({'code':0, 'errmsg':'OK'})
 
 from apps.users.models import Address
-class AddressCreateView(LoginRequiredJsonMixin, View):
 
-  def post(self,request:HttpRequest):
-    data = json.loads(request.body.decode())
-    receiver = data.get('receiver')
-    province_id = data.get('province_id')
-    city_id = data.get('city_id')
-    district_id = data.get('district_id')
-    place = data.get('place')
-    mobile = data.get('mobile')
-    tel = data.get('tel')
-    email = data.get('email')
-    user = request.user
-    # verify data.
-    address = Address.objects.create(
-        user =user,
-        title = receiver,
-        receiver = receiver,
-        province_id = province_id,
-        city_id = city_id,
-        district_id =district_id,
-        place = place,
-        mobile = mobile,
-        tel = tel,
-        email = email
-    )
-    address_dict = {
-        "id": address.id,
-        "title": address.title,
-        "receiver": address.receiver,
-        "province": address.province.name,
-        "city": address.city.name,
-        "district": address.district.name,
-        "place": address.place,
-        "mobile": address.mobile,
-        "tel": address.tel,
-        "email": address.email
-    }
-    return JsonResponse({'code':0,'errmsg':'OK','address':address_dict})
+class AddressView(LoginRequiredJsonMixin, View):
+    def get(self, request:HttpRequest):
+        user = request.user
+        addresses = Address.objects.filter(user=user, is_deleted=False)
+        address_list = []
+        for address in addresses:
+            address_list.append( {
+                "id": address.id,
+                "title": address.title,
+                "receiver": address.receiver,
+                "province": address.province.name,
+                "city": address.city.name,
+                "district": address.district.name,
+                "place": address.place,
+                "mobile": address.mobile,
+                "tel": address.tel,
+                "email": address.email
+            })
+        return JsonResponse({'code':0,'errmsg':'OK','addresses':address_list})  
+class AddressCreateView(LoginRequiredJsonMixin, View):
+    
+    def post(self,request:HttpRequest):
+        data = json.loads(request.body.decode())
+        receiver = data.get('receiver')
+        province_id = data.get('province_id')
+        city_id = data.get('city_id')
+        district_id = data.get('district_id')
+        place = data.get('place')
+        mobile = data.get('mobile')
+        tel = data.get('tel')
+        email = data.get('email')
+        user = request.user
+        # verify data.
+        address = Address.objects.create(
+            user =user,
+            title = receiver,
+            receiver = receiver,
+            province_id = province_id,
+            city_id = city_id,
+            district_id =district_id,
+            place = place,
+            mobile = mobile,
+            tel = tel,
+            email = email
+        )
+        address_dict = {
+            "id": address.id,
+            "title": address.title,
+            "receiver": address.receiver,
+            "province": address.province.name,
+            "city": address.city.name,
+            "district": address.district.name,
+            "place": address.place,
+            "mobile": address.mobile,
+            "tel": address.tel,
+            "email": address.email
+        }
+        return JsonResponse({'code':0,'errmsg':'OK','address':address_dict})
