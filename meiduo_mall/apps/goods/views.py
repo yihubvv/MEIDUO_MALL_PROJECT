@@ -89,3 +89,21 @@ class SKUSearchView(SearchView):
       'total_page': paginator.num_pages,
       'searchkey': context.get('query'),
     })
+
+from utils.goods import get_goods_specs, get_categories,get_breadcrumb
+class DetailView(View):
+  def get(self,request, sku_id):
+    try:
+      sku=SKU.objects.get(id=sku_id)
+    except SKU.DoesNotExist:
+      pass
+    categories = get_categories()
+    breadcrumb = get_breadcrumb(sku.category)
+    goods_specs = get_goods_specs(sku)
+    context = {
+      'categories': categories,
+      'breadcrumb': breadcrumb,
+      'sku': sku,
+      'specs': goods_specs,
+    }
+    return render(request,'detail.html',context)
