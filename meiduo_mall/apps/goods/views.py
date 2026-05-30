@@ -45,6 +45,7 @@ class ListView(View):
         'id':sku.id,
         'name':sku.name,
         'price':sku.price,
+        'comments': sku.comments,
         'default_image_url':sku.default_image.url
       })
 
