@@ -103,17 +103,14 @@ var vm = new Vue({
                     withCredentials:true,
                 })
                 .then(response => {
+                    this.count = response.data.count;
+                    this.searchkey = response.data.searchkey || this.query;
+                    var results = response.data.list;
                     this.skus = [];
-                    // this.count = response.data.count;
-                    this.count = 0
-                    var results = response.data;
                     for(var i=0; i< results.length; i++){
                         var sku = results[i];
                         sku.url = '/goods/' + sku.id + ".html";
-                        this.searchkey = sku.searchkey
                         this.skus.push(sku);
-                        this.page_size = sku.page_size;
-                        this.count += sku.count
                     }
                 })
                 .catch(error => {
@@ -122,7 +119,7 @@ var vm = new Vue({
         },
         // 点击页数
         on_page: function(num){
-            if (num != this.page && num <= this.page_size){
+            if (num != this.page && num <= this.total_page){
                 this.page = num;
                 this.get_search_result();
             }

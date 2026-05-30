@@ -1,8 +1,9 @@
 from django.urls import path
-from apps.goods.views import IndexView, ListView
+from apps.goods.views import IndexView, ListView,SKUSearchView
+from haystack.views import search_view_factory
 
 urlpatterns = [
   path('index/',IndexView.as_view()),
-  path('list/<category_id>/skus/',ListView.as_view()),
   path('lists/<category_id>/skus/',ListView.as_view()),
+  path('search/',search_view_factory(view_class=SKUSearchView)),
 ]

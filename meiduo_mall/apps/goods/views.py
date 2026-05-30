@@ -52,3 +52,40 @@ class ListView(View):
     total_num = paginator.num_pages
 
     return JsonResponse({'code':0,'errmsg':'OK', 'breadcrumb':breadcrumb,'list':sku_dict,'count':total_num})
+
+from haystack.views import SearchView
+from django.http import JsonResponse
+class SKUSearchView(SearchView):
+
+  def __call__(self, request):
+    try:
+      self.results_per_page = int(request.GET.get('page_size', self.results_per_page))
+    except (TypeError, ValueError):
+      pass
+
+    return super().__call__(request)
+
+  def create_response(self):
+    context = self.get_context()
+    sku_list = []
+    page = context['page']
+    paginator = context['paginator']
+    for item in page.object_list:
+      sku = item.object
+      if sku is None:
+        continue
+      sku_list.append({
+        'id': sku.id,
+        'name': sku.name,
+        'price': sku.price,
+        'comments': sku.comments,
+        'default_image_url': sku.default_image.url if sku.default_image else '',
+      })
+    return JsonResponse({
+      'count': paginator.count,
+      'list': sku_list,
+      'page': page.number,
+      'page_size': self.results_per_page,
+      'total_page': paginator.num_pages,
+      'searchkey': context.get('query'),
+    })
