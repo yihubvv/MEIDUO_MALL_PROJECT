@@ -189,3 +189,26 @@ class SKUSpecification(BaseModel):
             self.spec.name,
             self.option.value
         )
+    
+class GoodsVisitCount(BaseModel):
+
+    category = models.ForeignKey(
+        GoodsCategory,
+        on_delete=models.CASCADE,
+        verbose_name='category'
+    )
+
+    count = models.IntegerField(
+        verbose_name='count',
+        default=0
+    )
+
+    date = models.DateField(
+        auto_now_add=True,
+        verbose_name='date'
+    )
+
+    class Meta:
+        db_table = 'tb_goods_visit'
+        verbose_name = 'Visits'
+        verbose_name_plural = verbose_name

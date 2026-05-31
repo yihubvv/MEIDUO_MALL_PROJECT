@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'apps.goods',
     'apps.contents',
     'haystack',
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -130,7 +131,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_URL = '/static/'
+FRONT_END_PC_BASE_URL = os.environ.get('FRONT_END_PC_BASE_URL', 'http://www.meiduo.site:8080/')
+FRONT_END_PC_BASE_URL = FRONT_END_PC_BASE_URL.rstrip('/') + '/'
+
+STATIC_URL = FRONT_END_PC_BASE_URL
 STATICFILES_DIRS = [
     os.path.join(os.path.dirname(BASE_DIR), 'front_end_pc'),
 ]
@@ -242,7 +246,7 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 
 EMAIL_FROM = os.environ.get('EMAIL_FROM', 'MeiDuo Mall <>'.format(EMAIL_HOST_USER))
 
-FDFS_BASE_URL = 'http://image.meiduo.site:8888/'
+FDFS_BASE_URL = os.environ.get('FDFS_BASE_URL', 'http://172.21.243.224:8888/').rstrip('/') + '/'
 DEFAULT_FILE_STORAGE = 'utils.fastdfs.storage.MyStorage'
 STORAGES = {
     'default': {
@@ -261,3 +265,8 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 5
+
+CRONJOBS = [
+  ('*/1 * * * *', 'apps.contents.crons.generic_meiduo_index', '>> ' + os.path.join(BASE_DIR, 'logs/crontab.log')),
+  ('0 */1 * * *', 'apps.contents.crons.generic_detail_htmls', '>> ' + os.path.join(BASE_DIR, 'logs/crontab.log')),
+]

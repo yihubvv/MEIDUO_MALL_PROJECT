@@ -1,13 +1,14 @@
+{% load static %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <title>美多商城-商品详情</title>
-    <link rel="stylesheet" type="text/css" href="http://www.meiduo.site:8080/css/reset.css">
-    <link rel="stylesheet" type="text/css" href="http://www.meiduo.site:8080/css/main.css">
-    <script type="text/javascript" src="http://www.meiduo.site:8080/js/host.js"></script>
-    <script type="text/javascript" src="http://www.meiduo.site:8080/js/vue-2.5.16.js"></script>
-    <script type="text/javascript" src="http://www.meiduo.site:8080/js/axios-0.18.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <script type="text/javascript" src="{% static 'js/host.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/vue-2.5.16.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/axios-0.18.0.min.js' %}"></script>
 </head>
 <body>
     <div id="app" v-cloak>
@@ -240,7 +241,7 @@
         var price = sku.price;
         var cat = sku.category.id;
     </script>
-    <script type="text/javascript" src="http://www.meiduo.site:8080/js/common.js"></script>
-    <script type="text/javascript" src="http://www.meiduo.site:8080/js/detail.js"></script>
+    <script type="text/javascript" src="{% static 'js/common.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/detail.js' %}"></script>
 </body>
 </html>

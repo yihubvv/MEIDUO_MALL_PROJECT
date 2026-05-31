@@ -2,7 +2,9 @@ from django.shortcuts import render
 from django.http import HttpRequest
 # Create your views here.
 from django.views import View
-from utils.goods import get_breadcrumb,get_goods_specs, get_categories
+from utils import models
+from utils.models import BaseModel
+from utils.goods import get_breadcrumb, get_goods_specs, get_categories
 from apps.contents.models import ContentCategory
 class IndexView(View):
   def get(self, request:HttpRequest):
@@ -89,7 +91,7 @@ class SKUSearchView(SearchView):
       'total_page': paginator.num_pages,
       'searchkey': context.get('query'),
     })
-
+from datetime import date
 from utils.goods import get_goods_specs, get_categories,get_breadcrumb
 class DetailView(View):
   def get(self,request, sku_id):
@@ -108,24 +110,23 @@ class DetailView(View):
     }
     return render(request,'detail.html',context)
   
-from django.template import loader
-from meiduo_mall import settings
-import os
-def generic_meiduo_index(self,request):
-    categories = get_categories()
-    contents= {}
-    content_categories = ContentCategory.objects.all()
-    for cat in content_categories:
-      contents[cat.key] = cat.content_set.filter(status=True).order_by('sequence')
-    
-    context = {
-      'categories': categories,
-      'contents': contents,
-    }
-    index_template = loader.get_template('index.html')
-    index_html_data = index_template.render(context)
+from apps.goods.models import GoodsVisitCount
+class CategoryVisitCountView(View):
+  def get(self, request, category_id):
+    return self.post(request, category_id)
 
-    file_path = os.path.join(os.path.dirname(settings.BASE_DIR),'front_end_pc/index.html')
-    with open(file_path, 'w', encoding='utf-8') as f:
-      f.write(index_html_data)
-    return render(request, 'index.html', context)
+  def post(self, request, category_id):
+    try:
+      category = GoodsCategory.objects.get(id=category_id)
+    except GoodsCategory.DoesNotExist:
+      return JsonResponse({'code':400,'errmsg':'No such category.'})
+    today = date.today()
+    try:
+      gvc = GoodsVisitCount.objects.get(category=category,date=today)
+    except GoodsVisitCount.DoesNotExist:
+      GoodsVisitCount.objects.create(category = category, date=today,count = 1)
+    else: 
+      gvc.count += 1
+      gvc.save()
+
+    return JsonResponse({'code':0, 'errmsg': 'OK'})
