@@ -229,6 +229,30 @@ class AddressView(LoginRequiredJsonMixin, View):
                 "email": address.email
             })
         return JsonResponse({'code':0,'errmsg':'OK','addresses':address_list})  
+
+from apps.goods.models import SKU
+from django_redis import get_redis_connection
+class UserHistoryView(LoginRequiredJsonMixin, View):
+    def post(self, request):
+        user = request.user
+
+        data = json.loads(request.body.decode())
+        sku_id= data.get('sku_id')
+        try:
+            sku = SKU.objects.get(id = sku_id)
+        except SKU.DoesNotExist:
+            return JsonResponse({'code':400,'errmsg':'No such item'})
+        
+        redis_cli = get_redis_connection('history')
+        redis_cli.lrem(user.id, sku_id)
+        redis_cli.lpush(user.id,sku_id)
+        redis_cli.ltrim(user.id, 0, 4)
+
+        return JsonResponse({'code':0, 'errmsg':'ok'})
+
+
+
+
 class AddressCreateView(LoginRequiredJsonMixin, View):
     
     def post(self,request:HttpRequest):
