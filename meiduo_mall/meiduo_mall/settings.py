@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'apps.oauth',
     'apps.goods',
     'apps.contents',
+    'apps.carts',
     'haystack',
     'django_crontab',
 ]
