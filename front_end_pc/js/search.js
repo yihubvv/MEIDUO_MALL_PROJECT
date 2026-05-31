@@ -1,9 +1,17 @@
+function getCookieValue(name) {
+    if (typeof getCookie === 'function') {
+        return getCookie(name);
+    }
+    var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
+    return r ? r[1] : undefined;
+}
+
 var vm = new Vue({
     el: '#app',
     delimiters: ['[[', ']]'], // 修改vue模板符号，防止与django冲突
     data: {
         host: host,
-        username: getCookie('username') || sessionStorage.username || localStorage.username,
+        username: getCookieValue('username') || sessionStorage.username || localStorage.username,
         user_id: sessionStorage.user_id || localStorage.user_id,
         token: sessionStorage.token || localStorage.token,
         page: 1, // 当前页数
