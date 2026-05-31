@@ -3,7 +3,7 @@ var vm = new Vue({
     delimiters: ['[[', ']]'],
     data: {
         host,
-        username: sessionStorage.username || localStorage.username,
+        username: getCookie('username') || sessionStorage.username || localStorage.username,
         token: sessionStorage.token || localStorage.token,
         tab_content: {
             detail: true,

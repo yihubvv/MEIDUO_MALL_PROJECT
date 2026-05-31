@@ -244,11 +244,35 @@ class UserHistoryView(LoginRequiredJsonMixin, View):
             return JsonResponse({'code':400,'errmsg':'No such item'})
         
         redis_cli = get_redis_connection('history')
-        redis_cli.lrem(user.id, sku_id)
+        redis_cli.lrem(user.id, 0, sku_id)
         redis_cli.lpush(user.id,sku_id)
         redis_cli.ltrim(user.id, 0, 4)
 
         return JsonResponse({'code':0, 'errmsg':'ok'})
+
+    def get(self,request):
+        redis_cli = get_redis_connection('history')
+        ids = redis_cli.lrange(request.user.id,0,4)
+        history_list = []
+        for sku_id in ids:
+            try:
+                sku_id = int(sku_id)
+            except (TypeError, ValueError):
+                continue
+
+            try:
+                sku = SKU.objects.get(id=sku_id)
+            except SKU.DoesNotExist:
+                continue
+
+            history_list.append({
+                'id': sku.id,
+                'name': sku.name,
+                'default_image_url': sku.default_image.url,
+                'price': sku.price
+            })
+        return JsonResponse({'code':0, 'errmsg':'OK','skus':history_list})
+
 
 
 

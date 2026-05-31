@@ -57,6 +57,15 @@ var vm = new Vue({
                     .then(response => {
 
                         if (response.data.code == 0) {
+                            // Persist login state for pages that read sessionStorage/localStorage
+                            if (this.remember) {
+                                localStorage.username = this.username;
+                                sessionStorage.removeItem('username');
+                            } else {
+                                sessionStorage.username = this.username;
+                                localStorage.removeItem('username');
+                            }
+
                             // 跳转页面
                             var return_url = this.get_query_string('next');
                             if (!return_url) {

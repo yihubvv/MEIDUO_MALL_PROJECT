@@ -3,7 +3,7 @@ var vm = new Vue({
     delimiters: ['[[', ']]'], // 修改vue模板符号，防止与django冲突
     data: {
         host: host,
-        username: sessionStorage.username || localStorage.username,
+        username: getCookie('username') || sessionStorage.username || localStorage.username,
         user_id: sessionStorage.user_id || localStorage.user_id,
         token: sessionStorage.token || localStorage.token,
         page: 1, // 当前页数
