@@ -137,6 +137,8 @@ class LoginView(View):
         
         response = JsonResponse({'code':0,'errmsg':'OK'})
         response.set_cookie('username', v_username, path='/')
+        from apps.carts.utils import merge_cookie_to_redis
+        response = merge_cookie_to_redis(request, response)
         return response
 
 from django.contrib.auth import logout
