@@ -25,7 +25,7 @@ def merge_cookie_to_redis(request:HttpRequest, response:HttpResponse):
       if len(selected_ids)>0:
         pipeline.sadd('selected_%s'%user.id,*selected_ids)
       if len(unselected_ids)>0:
-        pipeline.srem('unselected_%s'%user.id, *unselected_ids)
+        pipeline.srem('selected_%s'%user.id, *unselected_ids)
       pipeline.execute()
       response.delete_cookie('carts')
       return response
