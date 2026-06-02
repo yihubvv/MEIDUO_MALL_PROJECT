@@ -25,6 +25,11 @@ var vm = new Vue({
                 this.skus = response.data.context.skus;
                 this.freight = response.data.context.freight;
                 this.addresses = response.data.context.addresses;
+                if (response.data.context.default_address_id) {
+                    this.nowsite = response.data.context.default_address_id;
+                } else if (this.addresses.length > 0) {
+                    this.nowsite = this.addresses[0].id;
+                }
                 this.total_count = 0;
                 this.total_amount = 0;
                 for(var i=0; i<this.skus.length; i++){
@@ -60,8 +65,16 @@ var vm = new Vue({
                     console.log(error.response);
                 })
         },
-         // 提交订单
+        // 提交订单
         on_order_submit: function(){
+                if (this.order_submitting) {
+                    return;
+                }
+                if (!this.nowsite) {
+                    alert('Please select a shipping address');
+                    return;
+                }
+                this.order_submitting = true;
                 var url = this.host+'/orders/commit/'
                 axios.post(url, {
                         address_id: this.nowsite,
@@ -78,6 +91,7 @@ var vm = new Vue({
                         } else if (response.data.code == 400){
                             alert(response.data.errmsg)
                         }
+                        this.order_submitting = false;
 
                     })
                     .catch(error => {

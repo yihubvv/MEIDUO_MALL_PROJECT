@@ -9,7 +9,8 @@ from django_redis import get_redis_connection
 import pickle
 import base64
 class CartsView(View):
-  def _normalize_carts(self, carts):
+  @staticmethod
+  def _normalize_carts(carts):
     normalized_carts = {}
     for sku_id, cart in carts.items():
       try:
@@ -180,3 +181,38 @@ class CartsView(View):
       response = JsonResponse({'code':0, 'errmsg':'OK'})
       response.set_cookie('carts', new_carts.decode(), max_age=7*3600*24)
       return response
+
+
+class CartsSelectAllView(View):
+  def put(self, request:HttpRequest):
+    data = json.loads(request.body.decode())
+    selected = data.get('selected')
+    user = request.user
+
+    if user.is_authenticated:
+      redis_cli = get_redis_connection('carts')
+      sku_ids = redis_cli.hkeys('carts_%s'%user.id)
+      if sku_ids:
+        if selected:
+          redis_cli.sadd('selected_%s'%user.id, *sku_ids)
+        else:
+          redis_cli.srem('selected_%s'%user.id, *sku_ids)
+      return JsonResponse({'code':0, 'errmsg':'OK', 'selected':selected})
+
+    cookie_cart = request.COOKIES.get('carts')
+    if cookie_cart is not None:
+      carts = pickle.loads(base64.b64decode(cookie_cart))
+    else:
+      carts = {}
+    carts = CartsView._normalize_carts(carts)
+
+    for sku_id in carts:
+      carts[sku_id]['selected'] = selected
+
+    response = JsonResponse({'code':0, 'errmsg':'OK', 'selected':selected})
+    response.set_cookie(
+      'carts',
+      base64.b64encode(pickle.dumps(carts)).decode(),
+      max_age=7*3600*24
+    )
+    return response
