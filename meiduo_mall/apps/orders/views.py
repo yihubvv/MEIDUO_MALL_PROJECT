@@ -37,6 +37,7 @@ class OrderSettlementView(LoginRequiredJsonMixin, View):
     pipeline.hgetall('carts_%s'%user.id)
     pipeline.smembers('selected_%s'%user.id)
     result = pipeline.execute()
+    
     sku_id_counts = result[0]
     selected_ids = result[1]
     selected_carts = {}
