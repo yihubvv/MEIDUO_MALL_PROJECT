@@ -93,6 +93,14 @@ DATABASES = {
         'USER': 'root',                        # Database username
         'PASSWORD': 'mysql',                   # Database user password
         'NAME': 'meiduo_mall'               # Database name
+    },
+    'slave': {
+        'ENGINE': 'django.db.backends.mysql',  # Database engine
+        'HOST': '127.0.0.1',                   # Database host
+        'PORT': 8306,                          # Database port
+        'USER': 'root',                        # Database username
+        'PASSWORD': 'mysql',                   # Database user password
+        'NAME': 'meiduo_mall'               # Database name
     }
 }
 
@@ -286,3 +294,5 @@ CRONJOBS = [
   ('*/1 * * * *', 'apps.contents.crons.generic_meiduo_index', '>> ' + os.path.join(BASE_DIR, 'logs/crontab.log')),
   ('0 */1 * * *', 'apps.contents.crons.generic_detail_htmls', '>> ' + os.path.join(BASE_DIR, 'logs/crontab.log')),
 ]
+
+# DATABASE_ROUTERS = ['utils.db_router.MasterSlaveDBRouter']
