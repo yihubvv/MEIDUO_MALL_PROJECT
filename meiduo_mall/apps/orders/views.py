@@ -1,8 +1,8 @@
 import json
 from decimal import Decimal
+from time import sleep
 
 from django.http import HttpRequest, JsonResponse
-from django.db import transaction
 from django_redis import get_redis_connection
 from django_redis.exceptions import ConnectionInterrupted
 from redis.exceptions import RedisError
@@ -13,7 +13,7 @@ from apps.goods.models import SKU
 from apps.orders.models import OrderInfo, OrderGoods
 from apps.users.models import Address
 from utils.view import LoginRequiredJsonMixin
-
+from django.db import transaction
 
 class OrderSettlementView(LoginRequiredJsonMixin, View):
   def get(self, request:HttpRequest):
@@ -143,28 +143,37 @@ class OrderCommitView(LoginRequiredJsonMixin, View):
         )
 
         for sku_id, count in carts.items():
-          try:
-            sku = SKU.objects.select_for_update().get(id=sku_id)
-          except SKU.DoesNotExist:
+          for i in range(10):
+            try:
+              sku = SKU.objects.get(id=sku_id)
+            except SKU.DoesNotExist:
+              transaction.set_rollback(True)
+              return JsonResponse({'code':400,'errmsg':'Product not found'})
+
+            if sku.stock < count:
+              transaction.set_rollback(True)
+              return JsonResponse({'code':400,'errmsg':'out of stock'})
+
+            old_stock = sku.stock
+            new_stock = sku.stock - count
+            new_sales = sku.sales + count
+            result = SKU.objects.filter(id=sku_id, stock=old_stock).update(stock=new_stock,sales=new_sales)
+            if result == 0:
+              sleep(0.05)
+              continue
+
+            total_count += count
+            total_amount += count * sku.price
+            OrderGoods.objects.create(
+              order=order_info,
+              sku=sku,
+              count=count,
+              price=sku.price
+            )
+            break
+          else:
             transaction.set_rollback(True)
-            return JsonResponse({'code':400,'errmsg':'Product not found'})
-
-          if sku.stock < count:
-            transaction.set_rollback(True)
-            return JsonResponse({'code':400,'errmsg':'out of stock'})
-
-          sku.stock -= count
-          sku.sales += count
-          sku.save()
-
-          total_count += count
-          total_amount += count * sku.price
-          OrderGoods.objects.create(
-            order=order_info,
-            sku=sku,
-            count=count,
-            price=sku.price
-          )
+            return JsonResponse({'code':400,'errmsg':'failed'})
 
         order_info.total_count = total_count
         order_info.total_amount = total_amount
@@ -187,4 +196,3 @@ class OrderCommitView(LoginRequiredJsonMixin, View):
         'order_id':order_id
       }
       )
-
