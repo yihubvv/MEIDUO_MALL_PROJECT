@@ -1,3 +1,5 @@
+import json
+
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import render
 from django.views import View
@@ -56,3 +58,46 @@ class OrderSettlementView(LoginRequiredJsonMixin, View):
     }
 
     return JsonResponse({'code':0, 'errmsg':'OK', 'context':context})
+
+from django.utils import timezone
+from apps.orders.models import OrderInfo
+class OrderCommitView(LoginRequiredJsonMixin, View):
+  def post(self, request:HttpRequest):
+    user = request.user
+    data = json.loads(request.body.decode())
+    address_id = data.get('address_id')
+    pay_method = data.get('pay_method')
+
+    if not all([address_id, pay_method]):
+      return JsonResponse({'code':400, 'errmsg':'bad input'})
+    
+    try:
+      address = Address.objects.get(id = address_id)
+    except Address.DoesNotExist:
+      return JsonResponse({'code':400, 'errmsg':'bad input'})
+    
+    if pay_method not in [OrderInfo.PAY_METHODS_ENUM['CASH'],OrderInfo.PAY_METHODS_ENUM['ALIPAY']]:
+      return JsonResponse({'code':400, 'errmsg':'bad input'})
+    order_id = timezone.localtime().strftime('%Y%m%d%H%M%S') + '%09d'%user.id
+
+    if pay_method == 1:
+      pay_status = 2
+    else:
+      pay_status = 1
+
+    total_count = 0
+    from decimal import Decimal
+    total_amount = Decimal('0')
+    freight = Decimal('10.00')
+
+    OrderInfo.objects.create(
+            order_id=order_id,
+            user=user,
+            address=address,
+            total_count=total_count,
+            total_amount=total_amount,
+            freight=freight,
+            pay_method=pay_method,
+            status=pay_status
+    )
+

@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='GoodsVisitCount',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('create_time', models.DateTimeField(auto_now_add=True, verbose_name='Date Of Creation')),
                 ('update_time', models.DateTimeField(auto_now=True, verbose_name='Date Of Update')),
                 ('count', models.IntegerField(default=0, verbose_name='count')),

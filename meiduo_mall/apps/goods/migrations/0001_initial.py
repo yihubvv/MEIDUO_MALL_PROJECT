@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Brand',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('create_time', models.DateTimeField(auto_now_add=True, verbose_name='Date Of Creation')),
                 ('update_time', models.DateTimeField(auto_now=True, verbose_name='Date Of Update')),
                 ('name', models.CharField(max_length=20, verbose_name='Name')),
@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='GoodsChannelGroup',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('create_time', models.DateTimeField(auto_now_add=True, verbose_name='Date Of Creation')),
                 ('update_time', models.DateTimeField(auto_now=True, verbose_name='Date Of Update')),
                 ('name', models.CharField(max_length=20, verbose_name='GoodsChannel')),
@@ -45,7 +45,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='GoodsCategory',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('create_time', models.DateTimeField(auto_now_add=True, verbose_name='Date Of Creation')),
                 ('update_time', models.DateTimeField(auto_now=True, verbose_name='Date Of Update')),
                 ('name', models.CharField(max_length=10, verbose_name='name')),
@@ -60,7 +60,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='GoodsChannel',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('create_time', models.DateTimeField(auto_now_add=True, verbose_name='Date Of Creation')),
                 ('update_time', models.DateTimeField(auto_now=True, verbose_name='Date Of Update')),
                 ('url', models.CharField(max_length=50, verbose_name='link')),
@@ -77,7 +77,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='SKU',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('create_time', models.DateTimeField(auto_now_add=True, verbose_name='Date Of Creation')),
                 ('update_time', models.DateTimeField(auto_now=True, verbose_name='Date Of Update')),
                 ('name', models.CharField(max_length=50, verbose_name='Name')),
@@ -101,7 +101,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='SKUImage',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('create_time', models.DateTimeField(auto_now_add=True, verbose_name='Date Of Creation')),
                 ('update_time', models.DateTimeField(auto_now=True, verbose_name='Date Of Update')),
                 ('image', models.ImageField(upload_to='', verbose_name='Image')),
@@ -116,7 +116,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='SPU',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('create_time', models.DateTimeField(auto_now_add=True, verbose_name='Date Of Creation')),
                 ('update_time', models.DateTimeField(auto_now=True, verbose_name='Date Of Update')),
                 ('name', models.CharField(max_length=50, verbose_name='Name')),
@@ -144,7 +144,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='SPUSpecification',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('create_time', models.DateTimeField(auto_now_add=True, verbose_name='Date Of Creation')),
                 ('update_time', models.DateTimeField(auto_now=True, verbose_name='Date Of Update')),
                 ('name', models.CharField(max_length=20, verbose_name='Specification Name')),
@@ -159,7 +159,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='SpecificationOption',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('create_time', models.DateTimeField(auto_now_add=True, verbose_name='Date Of Creation')),
                 ('update_time', models.DateTimeField(auto_now=True, verbose_name='Date Of Update')),
                 ('value', models.CharField(max_length=20, verbose_name='Option Value')),
@@ -174,7 +174,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='SKUSpecification',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('create_time', models.DateTimeField(auto_now_add=True, verbose_name='Date Of Creation')),
                 ('update_time', models.DateTimeField(auto_now=True, verbose_name='Date Of Update')),
                 ('sku', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='specs', to='goods.sku', verbose_name='SKU')),
