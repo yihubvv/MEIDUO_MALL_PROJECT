@@ -298,10 +298,6 @@ class UserHistoryView(LoginRequiredJsonMixin, View):
             })
         return JsonResponse({'code':0, 'errmsg':'OK','skus':history_list})
 
-
-
-
-
 class AddressCreateView(LoginRequiredJsonMixin, View):
     
     def post(self,request:HttpRequest):
