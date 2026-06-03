@@ -45,24 +45,47 @@ from django.views import View
 from apps.users.models import User
 from django.http import HttpRequest, JsonResponse
 import re
+from utils.responses.general_response import JsonResponseCount
+
 class UsernameCountView(View):
 
+    """
+    Verifies if the given username already exists in db.
+
+    Args:
+        request (HttpRequest): The received request.
+        username (str): Given username from request url.
+    Returns:
+        JsonResponseCount:
+            Look up in the db and return the # of identical username(s) in JsonResponse.
+    Example:
+        >>> get(request, 'Jone Doe')
+        {'code': 0, 'count': 1, 'errmsg': 'ok'}
+    """
+
     def get(self, request, username):
-        # 1. Receive the username and validate it
-        # if not re.match('[a-zA-Z0-9_-]{5,20}', username):
-        #     return JsonResponse({'code': 200, 'errmsg': 'Username does not meet the requirements'})
-
-        # 2. Query the database based on the username
         count = User.objects.filter(username=username).count()
-
-        # 3. Return the response
-        return JsonResponse({'code': 0, 'count': count, 'errmsg': 'ok'})
+        return JsonResponseCount(count)
     
 class MobileView(View):
 
+    """
+    Verifies if the given phone number already exists in db.
+
+    Args:
+        request (HttpRequest): The received request.
+        mobile (str): Given username from request url.
+    Returns:
+        JsonResponseCount:
+            Look up in the db and return the # of identical phone number(s) in JsonResponse.
+    Example:
+        >>> get(request, '6464913294')
+        {'code': 0, 'count': 1, 'errmsg': 'ok'}
+    """
+
     def get(self, request, mobile):
         count = User.objects.filter(mobile=mobile).count()
-        return JsonResponse({'code': 0, 'count': count, 'errmsg': 'ok'})
+        return JsonResponseCount(count)
     
 import json
 from django.contrib.auth import login,authenticate
@@ -130,7 +153,7 @@ class LoginView(View):
 
         login(request,user)
 
-        if(v_remembered != None):
+        if v_remembered:
             request.session.set_expiry(None)
         else:
             request.session.set_expiry(0)

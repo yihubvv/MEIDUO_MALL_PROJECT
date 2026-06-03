@@ -28,4 +28,4 @@ def merge_cookie_to_redis(request:HttpRequest, response:HttpResponse):
         pipeline.srem('selected_%s'%user.id, *unselected_ids)
       pipeline.execute()
       response.delete_cookie('carts')
-      return response
+    return response

@@ -141,7 +141,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-FRONT_END_PC_BASE_URL = os.environ.get('FRONT_END_PC_BASE_URL', 'http://www.meiduo.site:8080/')
+FRONT_END_PC_BASE_URL = os.environ.get('FRONT_END_PC_BASE_URL', '/static/')
 FRONT_END_PC_BASE_URL = FRONT_END_PC_BASE_URL.rstrip('/') + '/'
 
 STATIC_URL = FRONT_END_PC_BASE_URL
