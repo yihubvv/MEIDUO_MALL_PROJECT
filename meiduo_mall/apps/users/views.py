@@ -45,7 +45,7 @@ from django.views import View
 from apps.users.models import User
 from django.http import HttpRequest, JsonResponse
 import re
-from utils.responses.general_response import JsonResponseCount, JsonResponseError
+from utils.responses.general_response import JsonResponseCount, JsonResponseError, JsonResponsePass
 
 class UsernameCountView(View):
 
@@ -130,7 +130,7 @@ class RegisterView(View):
 
         login(request,user)
         
-        return JsonResponse({'code':0, 'errmsg':'Success'})
+        return JsonResponsePass
     
 class LoginView(View):
     def post(self,request:HttpRequest):

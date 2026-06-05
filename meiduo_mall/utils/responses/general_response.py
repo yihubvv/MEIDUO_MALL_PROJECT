@@ -16,14 +16,14 @@ class JsonResponsePass(JsonResponse):
 
     Response Format:
         {
-            "code": 200,
+            "code": 0,
             "errmsg": "OK"
         }
     """
 
     def __init__(
         self,
-        code: int = 200,
+        code: int = 0,
         errmsg: str = NO_ERROR
     ) -> None:
         """
