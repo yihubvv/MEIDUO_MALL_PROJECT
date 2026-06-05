@@ -100,45 +100,89 @@ import json
 from django.contrib.auth import login,authenticate
 import meiduo_mall.errors as error
 class RegisterView(View):
+    """
+    Handle user registration requests.
+    """
 
-    def post(self, request:HttpRequest):
+    def post(self, request: HttpRequest):
+        """
+        Register a new user.
+
+        Args:
+            request (HttpRequest):
+                Incoming HTTP request containing user registration data.
+
+        Expected JSON Body:
+            {
+                "allow": true,
+                "mobile": "1234567890",
+                "password": "password123",
+                "password2": "password123",
+                "username": "example_user"
+            }
+
+        Returns:
+            JsonResponse:
+                Success response if registration succeeds,
+                otherwise an error response.
+        """
+
         req = request.body.decode()
         req_dict = json.loads(req)
+
         allow = req_dict['allow']
         mobile = req_dict['mobile']
         password = req_dict['password']
         password2 = req_dict['password2']
-        # sms_code = req_dict['sms_code']
         username_req = req_dict['username']
-        
-        if not all([allow,mobile,password,password2,username_req]):
+
+        if not all([allow, mobile, password, password2, username_req]):
             return JsonResponseError(errmsg=error.INSUFFICIENT_DATA)
-        
-        if not (allow == True):
-            return JsonResponseError(errmsg=error.DISAGREE_TO_AGREEMENT)
-        
-        if not re.match(r'[a-zA-Z_-]{5,20}',username_req):
+
+        if allow is not True:
+            return JsonResponseError(
+                errmsg=error.DISAGREE_TO_AGREEMENT
+            )
+
+        if not re.match(r'[a-zA-Z_-]{5,20}', username_req):
             return JsonResponseError(errmsg=error.BAD_USERNAME)
-        
-        if not (User.objects.filter(username=username_req).count() == 0):
-            return JsonResponseError(errmsg=error.DUPLICATE_USERNAME)
 
-        if not (re.match(r'^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$', mobile)):
-            return JsonResponseError(errmsg=error.BAD_PHONE_NUM)
-        
-        if not (User.objects.filter(mobile=mobile).count() == 0):
-            return JsonResponseError(errmsg=error.DUPLICATE_PHONE_NUM)
+        if User.objects.filter(username=username_req).exists():
+            return JsonResponseError(
+                errmsg=error.DUPLICATE_USERNAME
+            )
 
-        if not (len(password) > 8 or len(password) < 20):
-            return JsonResponseError(errmsg=error.BAD_PASSWORD)
-        
-        if not (password == password2):
-            return JsonResponseError(errmsg=error.MISMATCHED_PASSWORDS)
-        
-        user = User.objects.create_user(username=username_req, password=password, mobile=mobile)
+        if not re.match(
+            r'^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$',
+            mobile
+        ):
+            return JsonResponseError(
+                errmsg=error.BAD_PHONE_NUM
+            )
 
-        login(request,user)
-        
+        if User.objects.filter(mobile=mobile).exists():
+            return JsonResponseError(
+                errmsg=error.DUPLICATE_PHONE_NUM
+            )
+
+        if not (8 <= len(password) <= 20):
+            return JsonResponseError(
+                errmsg=error.BAD_PASSWORD
+            )
+
+        if password != password2:
+            return JsonResponseError(
+                errmsg=error.MISMATCHED_PASSWORDS
+            )
+
+        user = User.objects.create_user(
+            username=username_req,
+            password=password,
+            mobile=mobile
+        )
+
+        login(request, user)
+
         return JsonResponsePass()
     
 class LoginView(View):
