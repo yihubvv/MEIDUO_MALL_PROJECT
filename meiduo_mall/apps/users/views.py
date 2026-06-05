@@ -42,10 +42,19 @@ Steps:
 
 """
 from django.views import View
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import ensure_csrf_cookie
 from apps.users.models import User
 from django.http import HttpRequest, JsonResponse
 import re
 from utils.responses.general_response import JsonResponseCount, JsonResponseError, JsonResponsePass
+
+
+class CSRFTokenView(View):
+    @method_decorator(ensure_csrf_cookie)
+    def get(self, request):
+        return JsonResponse({'code': 0, 'errmsg': 'OK'})
+
 
 class UsernameCountView(View):
 
@@ -130,7 +139,7 @@ class RegisterView(View):
 
         login(request,user)
         
-        return JsonResponsePass
+        return JsonResponsePass()
     
 class LoginView(View):
     def post(self,request:HttpRequest):
