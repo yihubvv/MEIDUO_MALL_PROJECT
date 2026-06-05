@@ -15,3 +15,5 @@ DUPLICATE_PHONE_NUM='Duplicate phone number.'
 BAD_PASSWORD='Bad password.'
 
 MISMATCHED_PASSWORDS='Passwords mismatched'
+
+USER_DOES_NOT_EXIST='Can not find the user.'

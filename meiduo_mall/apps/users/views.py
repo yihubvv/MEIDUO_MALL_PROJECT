@@ -193,17 +193,16 @@ class LoginView(View):
         v_remembered = data['remembered']
 
         if not all([v_username,v_password]):
-            return JsonResponse({'code':400,'errmsg':'Incomplete Data.'})
+            return JsonResponseError(errmsg=error.INSUFFICIENT_DATA)
         
         if(re.match(r'^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$', v_username)):
-            User.USERNAME_FIELD = 'mobile'
+            user = User.objects.get(mobile=v_username)
         else:
-            User.USERNAME_FIELD = 'username'
-
-        user = authenticate(username=v_username,password=v_password)
+            user = User.objects.get(username=v_username)
+        user = authenticate(username=user.username,password=v_password)
 
         if(user == None):
-            return JsonResponse({'code':400,'errmsg':'Incorrect Username/Password.'})
+            return JsonResponseError(errmsg=error.USER_DOES_NOT_EXIST)
 
         login(request,user)
 
@@ -212,8 +211,9 @@ class LoginView(View):
         else:
             request.session.set_expiry(0)
         
-        response = JsonResponse({'code':0,'errmsg':'OK'})
-        response.set_cookie('username', v_username, path='/')
+        response = JsonResponse({'code':0,'errmsg':error.NO_ERROR})
+        response.set_cookie('username', user.username, path='/')
+        
         from apps.carts.utils import merge_cookie_to_redis
         response = merge_cookie_to_redis(request, response)
         return response
