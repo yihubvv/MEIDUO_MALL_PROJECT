@@ -17,24 +17,6 @@ from django.contrib import admin
 from django.urls import path, include, register_converter
 from django.urls.converters import get_converters
 
-# from django.http import HttpResponse
-
-# def log(request):
-
-#     # 1. Import logging
-#     import logging
-
-#     # 2. Create a logger
-#     logger = logging.getLogger('django')
-
-#     # 3. Call logger methods to save logs
-#     logger.info('User logged in')
-#     logger.warning('Redis cache is insufficient')
-#     logger.error('This record does not exist')
-#     logger.debug('~~~~~~~~~~~~~~~')
-
-#     return HttpResponse('log')
-
 # Register converter
 from utils.converters import UsernameConverter, MobileConverter
 

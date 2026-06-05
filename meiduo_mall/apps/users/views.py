@@ -45,7 +45,7 @@ from django.views import View
 from apps.users.models import User
 from django.http import HttpRequest, JsonResponse
 import re
-from utils.responses.general_response import JsonResponseCount
+from utils.responses.general_response import JsonResponseCount, JsonResponseError
 
 class UsernameCountView(View):
 
@@ -89,6 +89,7 @@ class MobileView(View):
     
 import json
 from django.contrib.auth import login,authenticate
+import meiduo_mall.errors as error
 class RegisterView(View):
 
     def post(self, request:HttpRequest):
@@ -102,28 +103,28 @@ class RegisterView(View):
         username_req = req_dict['username']
         
         if not all([allow,mobile,password,password2,username_req]):
-            return JsonResponse({'code':400, 'errmsg':'incomplete data'})
+            return JsonResponseError(errmsg=error.INSUFFICIENT_DATA)
         
         if not (allow == True):
-            return JsonResponse({'code':400, 'errmsg':'User does not agree to the agreement.'})
+            return JsonResponseError(errmsg=error.DISAGREE_TO_AGREEMENT)
         
         if not re.match(r'[a-zA-Z_-]{5,20}',username_req):
-            return JsonResponse({'code':400, 'errmsg':'User name should be 5-20 characters.'})
+            return JsonResponseError(errmsg=error.BAD_USERNAME)
         
         if not (User.objects.filter(username=username_req).count() == 0):
-            return JsonResponse({'code':400, 'errmsg':'Duplicate username.'})
+            return JsonResponseError(errmsg=error.DUPLICATE_USERNAME)
 
         if not (re.match(r'^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$', mobile)):
-            return JsonResponse({'code':400, 'errmsg':'Bad phone number.'})
+            return JsonResponseError(errmsg=error.BAD_PHONE_NUM)
         
         if not (User.objects.filter(mobile=mobile).count() == 0):
-            return JsonResponse({'code':400, 'errmsg':'Duplicate phone number.'})
+            return JsonResponseError(errmsg=error.DUPLICATE_PHONE_NUM)
 
         if not (len(password) > 8 or len(password) < 20):
-            return JsonResponse({'code':400, 'errmsg':'Bad password.'})
+            return JsonResponseError(errmsg=error.BAD_PASSWORD)
         
         if not (password == password2):
-            return JsonResponse({'code':400, 'errmsg':'Passwords do not match.'})
+            return JsonResponseError(errmsg=error.MISMATCHED_PASSWORDS)
         
         user = User.objects.create_user(username=username_req, password=password, mobile=mobile)
 
