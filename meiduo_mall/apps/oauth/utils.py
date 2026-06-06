@@ -2,11 +2,29 @@ from itsdangerous import URLSafeTimedSerializer as Serializer
 from meiduo_mall import settings
 from itsdangerous import BadData, BadTimeSignature, SignatureExpired
 def generic_open_id(openid):
+  """
+  Encodes openid when passing this data through the Internet.
+  Args:
+      openid:
+          openid from QQ
+  Returns:
+      openid:
+        encoded openid.
+  """
   s = Serializer(settings.SECRET_KEY)
   openid=s.dumps({'openid':openid})
   return openid
 
 def decode_open_id(openid):
+  """
+  Decodes openid when passing this data through the Internet.
+  Args:
+      openid:
+          openid from QQ
+  Returns:
+      openid:
+        decoded openid.
+  """
   s = Serializer(settings.SECRET_KEY)
   try:
     result = s.loads(openid, max_age=3600)
