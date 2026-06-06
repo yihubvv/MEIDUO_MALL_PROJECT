@@ -112,15 +112,6 @@ class RegisterView(View):
             request (HttpRequest):
                 Incoming HTTP request containing user registration data.
 
-        Expected JSON Body:
-            {
-                "allow": true,
-                "mobile": "1234567890",
-                "password": "password123",
-                "password2": "password123",
-                "username": "example_user"
-            }
-
         Returns:
             JsonResponse:
                 Success response if registration succeeds,
@@ -175,6 +166,17 @@ class RegisterView(View):
                 errmsg=error.MISMATCHED_PASSWORDS
             )
 
+        from apps.verification.utils import verifyCaptcha
+
+        captcha_result = verifyCaptcha(data=req_dict)
+        if captcha_result['code'] != 0:
+            return JsonResponseError(errmsg=captcha_result['errmsg'])
+
+        # sms_code = req_dict.get('sms_code')
+        # sms_result = verifySmsCode(mobile, sms_code)
+        # if sms_result['code'] != 0:
+        #     return JsonResponseError(errmsg=sms_result['errmsg'])
+
         user = User.objects.create_user(
             username=username_req,
             password=password,
@@ -213,7 +215,7 @@ class LoginView(View):
         
         response = JsonResponse({'code':0,'errmsg':error.NO_ERROR})
         response.set_cookie('username', user.username, path='/')
-        
+
         from apps.carts.utils import merge_cookie_to_redis
         response = merge_cookie_to_redis(request, response)
         return response
