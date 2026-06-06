@@ -189,6 +189,18 @@ class RegisterView(View):
     
 class LoginView(View):
     def post(self,request:HttpRequest):
+        """
+        Verifies unser info and log them in, and merge cart info before they logged in.
+
+        Args:
+            request (HttpRequest):
+                Incoming HTTP request containing user login data.
+
+        Returns:
+            JsonResponse:
+                Success response if login succeeds,
+                otherwise an error response.
+        """
         data = json.loads(request.body.decode())
         v_username = data['username']
         v_password = data['password']
@@ -223,14 +235,36 @@ class LoginView(View):
 from django.contrib.auth import logout
 class LogoutView(View):
     def delete(self, request):
+        """
+        Lets user log out.
+
+        Args:
+            request (HttpRequest):
+                Incoming HTTP request containing user logout data.
+
+        Returns:
+            JsonResponse:
+                Success response if logout succeeds,
+        """
         logout(request)
-        response = JsonResponse({'code':0,'errmsg':'OK'})
+        response = JsonResponse({'code':0,'errmsg':error.NO_ERROR})
         response.delete_cookie('username')
         return response
 
 from utils.view import LoginRequiredJsonMixin
 class CenterView(LoginRequiredJsonMixin, View):
     def get(self, request):
+        """
+        Retrieves required in database in order to render page.
+
+        Args:
+            request (HttpRequest):
+                Incoming HTTP request containing user data.
+
+        Returns:
+            info_data:
+                User info from the database.
+        """
         # get request.user by using the middleware in setting
         info_data = {
             'username':request.user.username,
@@ -238,7 +272,7 @@ class CenterView(LoginRequiredJsonMixin, View):
             'mobile':request.user.mobile,
             'email_active':request.user.email_active
         }
-        return JsonResponse({'code':0,'errmsg':'OK','info_data':info_data})
+        return JsonResponse({'code':0,'errmsg':error.NO_ERROR,'info_data':info_data})
 
 from django.conf import settings
 from django.core.mail import send_mail

@@ -14,4 +14,5 @@ class BaseModel(models.Model):
     )
 
     class Meta:
+        # tells django not to import this into database.
         abstract = True

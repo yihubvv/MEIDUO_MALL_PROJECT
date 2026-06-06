@@ -27,3 +27,5 @@ Captcha_MISMATCHED='Captcha mismatched.'
 SMS_MISMATCHED='SMS code mismatched.'
 
 EXCESSIVE_SMS_REQUESTS='SMS sent repeatedly.'
+
+USER_NOT_LOGGED_IN='User did not log in!'
