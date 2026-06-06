@@ -20,4 +20,10 @@ USER_DOES_NOT_EXIST='Can not find the user.'
 
 Captcha_EXPIRED='Captcha expired.'
 
+SMS_EXPIRED='SMS code expired.'
+
 Captcha_MISMATCHED='Captcha mismatched.'
+
+SMS_MISMATCHED='SMS code mismatched.'
+
+EXCESSIVE_SMS_REQUESTS='SMS sent repeatedly.'
