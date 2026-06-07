@@ -33,3 +33,5 @@ EXCESSIVE_SMS_REQUESTS='SMS sent repeatedly.'
 USER_NOT_LOGGED_IN='User did not log in!'
 
 BAD_EMAIL_FORMAT='Invalid email.'
+
+FAILED_UPDATE='Update Failed.'

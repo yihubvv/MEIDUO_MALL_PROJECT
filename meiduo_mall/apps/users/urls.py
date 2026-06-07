@@ -1,6 +1,6 @@
 from django.urls import path
 from apps.users.views import CSRFTokenView, UsernameCountView, RegisterView, MobileView,LoginView,LogoutView,CenterView,EmailView,EmailVerifyView
-from apps.users.views import AddressCreateView, AddressView, UserHistoryView
+from apps.users.views import AddressCreateView, AddressView, UserHistoryView, UpdateDestroyAddressView
 urlpatterns = [
     path('csrf/', CSRFTokenView.as_view()),
     #Check whether the username already exists.
@@ -14,6 +14,7 @@ urlpatterns = [
     path('addresses/create/',AddressCreateView.as_view()),
     path('addresses/',AddressView.as_view()),
     path('browse_histories/',UserHistoryView.as_view()),
-    path('mobiles/<mobile:mobile>/count/', MobileView.as_view())
+    path('mobiles/<mobile:mobile>/count/', MobileView.as_view()),
+    path('addresses/<int:address_id>/', UpdateDestroyAddressView.as_view())
 
 ]

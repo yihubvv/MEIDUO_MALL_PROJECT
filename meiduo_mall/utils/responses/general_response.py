@@ -105,4 +105,4 @@ class JsonResponseError(JsonResponse):
             'code': code,
             'errmsg': errmsg,
         }
-        super().__init__(data)
+        super().__init__(data, status=code)

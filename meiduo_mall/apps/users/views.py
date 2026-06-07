@@ -49,6 +49,19 @@ from django.http import HttpRequest, JsonResponse
 import re
 from utils.responses.general_response import JsonResponseCount, JsonResponseError, JsonResponsePass
 
+PHONE_RE = re.compile(r'^(?:\d{10}|1\d{10})$')
+EMAIL_RE = re.compile(r'^[a-z0-9][\w\.\-]*@[a-z0-9\-]+(\.[a-z]{2,5}){1,2}$')
+
+
+def normalize_phone(value):
+    if not value:
+        return ''
+    return re.sub(r'\D', '', str(value))
+
+
+def is_valid_phone(value):
+    return bool(PHONE_RE.fullmatch(normalize_phone(value)))
+
 
 class CSRFTokenView(View):
     @method_decorator(ensure_csrf_cookie)
@@ -122,7 +135,7 @@ class RegisterView(View):
         req_dict = json.loads(req)
 
         allow = req_dict['allow']
-        mobile = req_dict['mobile']
+        mobile = normalize_phone(req_dict['mobile'])
         password = req_dict['password']
         password2 = req_dict['password2']
         username_req = req_dict['username']
@@ -143,10 +156,7 @@ class RegisterView(View):
                 errmsg=error.DUPLICATE_USERNAME
             )
 
-        if not re.match(
-            r'^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$',
-            mobile
-        ):
+        if not is_valid_phone(mobile):
             return JsonResponseError(
                 errmsg=error.BAD_PHONE_NUM
             )
@@ -345,6 +355,15 @@ class EmailVerifyView(View):
 from apps.users.models import Address
 
 class AddressView(LoginRequiredJsonMixin, View):
+    """
+    Display all user input addresses.
+    Args:
+        request (HttpRequest):
+            Incoming HTTP request containing user login data.
+    Returns:
+        JsonResponse:
+            Success response with a list of addresses.
+    """
     def get(self, request:HttpRequest):
         user = request.user
         addresses = Address.objects.filter(user=user, is_deleted=False)
@@ -408,7 +427,15 @@ class UserHistoryView(LoginRequiredJsonMixin, View):
         return JsonResponse({'code':0, 'errmsg':'OK','skus':history_list})
 
 class AddressCreateView(LoginRequiredJsonMixin, View):
-    
+    """
+    Add a new address in user profile.
+    Args:
+        request (HttpRequest):
+            Incoming HTTP request containing user login data.
+    Returns:
+        JsonResponse:
+            Success response with a dict of address.
+    """
     def post(self,request:HttpRequest):
         data = json.loads(request.body.decode())
         receiver = data.get('receiver')
@@ -416,11 +443,21 @@ class AddressCreateView(LoginRequiredJsonMixin, View):
         city_id = data.get('city_id')
         district_id = data.get('district_id')
         place = data.get('place')
-        mobile = data.get('mobile')
+        mobile = normalize_phone(data.get('mobile'))
         tel = data.get('tel')
         email = data.get('email')
         user = request.user
-        # verify data.
+        if not all([receiver, province_id, city_id, district_id, place, mobile]):
+            return JsonResponseError(errmsg=error.INSUFFICIENT_DATA)
+        if not is_valid_phone(mobile):
+            return JsonResponseError(errmsg=error.BAD_PHONE_NUM)
+        if tel:
+            tel = normalize_phone(tel)
+            if not is_valid_phone(tel):
+                return JsonResponseError(errmsg=error.BAD_PHONE_NUM)
+        if email and not EMAIL_RE.fullmatch(email):
+            return JsonResponseError(errmsg=error.BAD_EMAIL_FORMAT)
+
         address = Address.objects.create(
             user =user,
             title = receiver,
@@ -445,4 +482,77 @@ class AddressCreateView(LoginRequiredJsonMixin, View):
             "tel": address.tel,
             "email": address.email
         }
-        return JsonResponse({'code':0,'errmsg':'OK','address':address_dict})
+        return JsonResponse({'code':0,'errmsg':error.NO_ERROR,'address':address_dict})
+
+class UpdateDestroyAddressView(LoginRequiredJsonMixin, View):
+    """
+    Allows user to change their address.
+    Args:
+        request (HttpRequest):
+            Incoming HTTP request containing user login data.
+        address_id:
+            The address id that user want to modify.
+    Returns:
+        JsonResponse:
+            Success response with a dict of modified address.
+    """
+    def put(self,request:HttpRequest, address_id):
+        json_dict = json.loads(request.body.decode())
+        receiver = json_dict.get('receiver')
+        province_id = json_dict.get('province_id')
+        city_id = json_dict.get('city_id')
+        district_id = json_dict.get('district_id')
+        place = json_dict.get('place')
+        mobile = normalize_phone(json_dict.get('mobile'))
+        tel = json_dict.get('tel')
+        email = json_dict.get('email')
+
+        if not all([receiver, province_id, city_id, district_id, place, mobile]):
+            return JsonResponseError(errmsg=error.INSUFFICIENT_DATA)
+        if not is_valid_phone(mobile):
+            return JsonResponseError(errmsg=error.BAD_PHONE_NUM)
+
+        if tel:
+            tel = normalize_phone(tel)
+            if not is_valid_phone(tel):
+                return JsonResponseError(errmsg=error.BAD_PHONE_NUM)
+        if email and not EMAIL_RE.fullmatch(email):
+            return JsonResponseError(errmsg=error.BAD_EMAIL_FORMAT)
+
+        try:
+            updated = Address.objects.filter(
+                id=address_id,
+                user=request.user,
+                is_deleted=False
+            ).update(
+                user = request.user,
+                title = receiver,
+                receiver = receiver,
+                province_id = province_id,
+                city_id = city_id,
+                district_id = district_id,
+                place = place,
+                mobile = mobile,
+                tel = tel,
+                email = email
+            )
+            if not updated:
+                return JsonResponseError(errmsg=error.FAILED_UPDATE)
+        except Exception:
+            return JsonResponseError(errmsg=error.FAILED_UPDATE)
+        
+        address = Address.objects.get(id=address_id, user=request.user, is_deleted=False)
+        address_dict = {
+            "id": address.id,
+            "title": address.title,
+            "receiver": address.receiver,
+            "province": address.province.name,
+            "city": address.city.name,
+            "district": address.district.name,
+            "place": address.place,
+            "mobile": address.mobile,
+            "tel": address.tel,
+            "email": address.email
+        }
+
+        return JsonResponse({'code':0,'errmsg':error.NO_ERROR,'address':address_dict})
