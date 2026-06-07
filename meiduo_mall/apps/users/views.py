@@ -279,6 +279,15 @@ from django.core.mail import send_mail
 from apps.users.utils import generic_email_verify_token
 from celery_tasks.email.tasks import celery_send_email
 class EmailView(LoginRequiredJsonMixin, View):
+    """
+    This function checks if user's email is valid, then generates a link with token for user to verify their email.
+    Args:
+        request:
+            request from frontend.
+    Returns:
+        response:
+          response with a message of success or error.
+    """
     def put(self, request:HttpRequest):
         data = json.loads(request.body.decode())
         email = data.get('email')
@@ -287,7 +296,7 @@ class EmailView(LoginRequiredJsonMixin, View):
             user.email = email
             user.save() 
         else:
-            return JsonResponse({'code':400,'errmsg':'Invalid Email Format.'})
+            return JsonResponse({'code':400,'errmsg':error.BAD_EMAIL_FORMAT})
         
         token = generic_email_verify_token(request.user.id)
         subject = 'Testing message from MEI_DUO MALL'
@@ -306,22 +315,32 @@ class EmailView(LoginRequiredJsonMixin, View):
                 recipient_list=recipient_list,
                 html_message=html_message)
         
-        return JsonResponse({'code':0,'errmsg':'OK'})
+        return JsonResponsePass
 
 from apps.users.utils import check_token
+
 class EmailVerifyView(View):
+    """
+    This function is called when user clicked on the link that verifies their email, campares the token and decide if the email is active.
+    Args:
+        request:
+            request from frontend.
+    Returns:
+        response:
+          response with a message of success or error.
+    """
     def put(self, request):
         data = request.GET
         token = data.get('token')
         if(token is None):
-            return JsonResponse({'code':400, 'errmsg':'Incomplete data.'})
+            return JsonResponseError(errmsg=error.INSUFFICIENT_DATA)
         user_id = check_token(token)
         if(user_id is None):
-            return JsonResponse({'code':400, 'errmsg':'Incomplete data.'})
+            return JsonResponseError(errmsg=error.INSUFFICIENT_DATA)
         user = User.objects.get(id=user_id)
         user.email_active = True
         user.save()
-        return JsonResponse({'code':0, 'errmsg':'OK'})
+        return JsonResponsePass
 
 from apps.users.models import Address
 
@@ -343,7 +362,7 @@ class AddressView(LoginRequiredJsonMixin, View):
                 "tel": address.tel,
                 "email": address.email
             })
-        return JsonResponse({'code':0,'errmsg':'OK','addresses':address_list})  
+        return JsonResponse({'code':0,'errmsg':error.NO_ERROR,'addresses':address_list})  
 
 from apps.goods.models import SKU
 from django_redis import get_redis_connection
