@@ -49,10 +49,8 @@ from django.http import HttpRequest, JsonResponse
 import re
 from utils.responses.general_response import JsonResponseCount, JsonResponseError, JsonResponsePass
 
-PHONE_RE = re.compile(r'^(?:\d{10}|1\d{10})$')
-EMAIL_RE = re.compile(r'^[a-z0-9][\w\.\-]*@[a-z0-9\-]+(\.[a-z]{2,5}){1,2}$')
 
-
+import meiduo_mall.regexRule as regex_M
 def normalize_phone(value):
     if not value:
         return ''
@@ -60,13 +58,13 @@ def normalize_phone(value):
 
 
 def is_valid_phone(value):
-    return bool(PHONE_RE.fullmatch(normalize_phone(value)))
+    return bool(regex_M.PHONE_RE.fullmatch(normalize_phone(value)))
 
 
 class CSRFTokenView(View):
     @method_decorator(ensure_csrf_cookie)
     def get(self, request):
-        return JsonResponse({'code': 0, 'errmsg': 'OK'})
+        return JsonResponsePass(errmsg=error.NO_ERROR)
 
 
 class UsernameCountView(View):
@@ -148,7 +146,7 @@ class RegisterView(View):
                 errmsg=error.DISAGREE_TO_AGREEMENT
             )
 
-        if not re.match(r'[a-zA-Z_-]{5,20}', username_req):
+        if not re.match(regex_M.RAW_USERNAME_RE, username_req):
             return JsonResponseError(errmsg=error.BAD_USERNAME)
 
         if User.objects.filter(username=username_req).exists():
@@ -219,7 +217,7 @@ class LoginView(View):
         if not all([v_username,v_password]):
             return JsonResponseError(errmsg=error.INSUFFICIENT_DATA)
         
-        if(re.match(r'^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$', v_username)):
+        if(re.match(regex_M.RAW_PHONE_RE, v_username)):
             user = User.objects.get(mobile=v_username)
         else:
             user = User.objects.get(username=v_username)
@@ -301,7 +299,7 @@ class EmailView(LoginRequiredJsonMixin, View):
     def put(self, request:HttpRequest):
         data = json.loads(request.body.decode())
         email = data.get('email')
-        if(re.match(r'^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$',email)):
+        if(re.match(regex_M.RAW_EMAIL_RE,email)):
             user = request.user
             user.email = email
             user.save() 
@@ -455,7 +453,7 @@ class AddressCreateView(LoginRequiredJsonMixin, View):
             tel = normalize_phone(tel)
             if not is_valid_phone(tel):
                 return JsonResponseError(errmsg=error.BAD_PHONE_NUM)
-        if email and not EMAIL_RE.fullmatch(email):
+        if email and not regex_M.EMAIL_RE.fullmatch(email):
             return JsonResponseError(errmsg=error.BAD_EMAIL_FORMAT)
 
         address = Address.objects.create(
@@ -516,7 +514,7 @@ class UpdateDestroyAddressView(LoginRequiredJsonMixin, View):
             tel = normalize_phone(tel)
             if not is_valid_phone(tel):
                 return JsonResponseError(errmsg=error.BAD_PHONE_NUM)
-        if email and not EMAIL_RE.fullmatch(email):
+        if email and not regex_M.EMAIL_RE.fullmatch(email):
             return JsonResponseError(errmsg=error.BAD_EMAIL_FORMAT)
 
         try:
@@ -556,3 +554,123 @@ class UpdateDestroyAddressView(LoginRequiredJsonMixin, View):
         }
 
         return JsonResponse({'code':0,'errmsg':error.NO_ERROR,'address':address_dict})
+    
+    def delete(self,request:HttpRequest, address_id):
+        """
+        Allows user to delete their address.
+        Args:
+            request (HttpRequest):
+                Incoming HTTP request containing user login data.
+            address_id:
+                The address id that user want to modify.
+        Returns:
+            JsonResponse:
+                Success response with a message.
+        """
+        try: 
+            address = Address.objects.get(id=address_id)
+
+        except Address.DoesNotExist:
+            return JsonResponseError(errmsg=error.FAILED_UPDATE)
+        
+        address.is_deleted = True
+
+        address.save()
+        return JsonResponsePass(errmsg=error.NO_ERROR)
+
+class DefalutAddressView(LoginRequiredJsonMixin, View):
+    def put(self,request:HttpRequest, address_id):
+        """
+        Allows user to set their default address.
+        Args:
+            request (HttpRequest):
+                Incoming HTTP request containing user login data.
+            address_id:
+                The address id that user want to modify.
+        Returns:
+            JsonResponse:
+                Success response with an OK message.
+        """
+        try:
+            address = Address.objects.get(id=address_id)
+            user = request.user
+            user.default_address = address
+            user.save()
+
+        except Exception:
+            return JsonResponseError(errmsg=error.FAILED_UPDATE)
+
+        return JsonResponse({'code':0,'errmsg':error.NO_ERROR})
+    
+class UpdateTitleAddressView(LoginRequiredJsonMixin, View):
+    def put(self,request:HttpRequest, address_id):
+        """
+        Allows user to update their address title.
+        Args:
+            request (HttpRequest):
+                Incoming HTTP request containing user login data.
+            address_id:
+                The address id that user want to modify.
+        Returns:
+            JsonResponse:
+                Success response with an OK message.
+        """
+        try:
+            json_dict = json.loads(request.body.decode())
+            title = json_dict.get('title')
+
+            address = Address.objects.get(id = address_id)
+
+        except Exception:
+            return JsonResponseError(errmsg=error.FAILED_UPDATE)
+        
+        address.title = title
+        address.save()
+
+        return JsonResponsePass(errmsg=error.NO_ERROR)
+
+
+class ChangePasswordView(LoginRequiredJsonMixin, View):
+    def put(self,request:HttpRequest):
+        """
+        Allows user to change their password.
+        Args:
+            request (HttpRequest):
+                Incoming HTTP request containing user login data.
+
+        Returns:
+            JsonResponse:
+                Success response with an OK message otherwise a fail message.
+        """
+        try:
+
+            json_dict = json.loads(request.body.decode())
+            old_password = json_dict.get('old_password')
+            new_password = json_dict.get('new_password')
+            new_password2 = json_dict.get('new_password2')
+
+            if not all([old_password, new_password, new_password2]):
+               return JsonResponseError(errmsg=error.INSUFFICIENT_DATA)
+            
+            user = request.user
+               
+            if not (user.check_password(old_password)):
+                return JsonResponseError(errmsg=error.FAILED_UPDATE)
+            if(new_password != new_password2):
+                return JsonResponseError(errmsg=error.MISMATCHED_PASSWORDS)
+            if not (8 <= len(new_password) <= 20):
+                return JsonResponseError(errmsg=error.BAD_PASSWORD)
+
+        except Exception:
+            return JsonResponseError(errmsg=error.FAILED_UPDATE)
+        
+        user.set_password(new_password)
+        user.save()
+
+        logout(request)
+
+        response = JsonResponse({'code':0, 'errmsg':error.NO_ERROR})
+
+        response.delete_cookie('username')
+
+        return response
