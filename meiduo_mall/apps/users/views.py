@@ -643,7 +643,6 @@ class ChangePasswordView(LoginRequiredJsonMixin, View):
                 Success response with an OK message otherwise a fail message.
         """
         try:
-
             json_dict = json.loads(request.body.decode())
             old_password = json_dict.get('old_password')
             new_password = json_dict.get('new_password')

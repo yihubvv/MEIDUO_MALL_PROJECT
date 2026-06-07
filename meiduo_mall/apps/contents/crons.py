@@ -29,9 +29,10 @@ def generic_meiduo_index():
 
 
 def generic_detail_htmls():
-    from meiduo_mall.apps.goods.models import SKU
+    from apps.goods.models import SKU
     from apps.contents.detail import generic_detail_html
 
     skus = SKU.objects.all()
     for sku in skus:
         generic_detail_html(sku)
+    print('----------%s generated %s detail pages----------' % (time.ctime(), skus.count()))
