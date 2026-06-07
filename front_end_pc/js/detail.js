@@ -16,7 +16,7 @@ var vm = new Vue({
         sku_price: price,
         cart_total_count: 0, // 购物车总数量
         carts: [], // 购物车数据
-        hots: [], // 热销商品
+        hot_skus: [], // 热销商品
         cat: cat, // 商品类别
         comments: [], // 评论信息
         score_classes: {
@@ -36,11 +36,14 @@ var vm = new Vue({
         // 添加用户浏览历史记录
         this.get_sku_id();
 
-        axios.post(this.host+'/browse_histories/', {
-            sku_id: this.sku_id
-        },{
-                responseType: 'json',
-                withCredentials:true,
+        var csrfReady = window.ensureCsrfCookie ? window.ensureCsrfCookie() : Promise.resolve();
+        csrfReady.then(() => {
+            return axios.post(this.host+'/browse_histories/', {
+                sku_id: this.sku_id
+            },{
+                    responseType: 'json',
+                    withCredentials:true,
+                });
             })
             .then(response=>{
                 console.log(response)
@@ -60,7 +63,7 @@ var vm = new Vue({
         detail_visit(){
             if (this.sku_id) {
                 var url = this.host + '/detail/visit/' + this.cat + '/';
-                axios.post(url, {}, {
+                axios.get(url, {
                     responseType: 'json',
                     withCredentials:true,
                 })
@@ -153,7 +156,20 @@ var vm = new Vue({
     },
         // 获取热销商品数据
         get_hot_goods: function(){
-
+            var url = this.host + '/hot/' + this.cat + '/';
+            axios.get(url, {
+                responseType: 'json',
+                withCredentials:true,
+            })
+                .then(response => {
+                    this.hot_skus = response.data.hot_skus || [];
+                    for (var i = 0; i < this.hot_skus.length; i++) {
+                        this.hot_skus[i].url = '/goods/' + this.hot_skus[i].id + '.html';
+                    }
+                })
+                .catch(error => {
+                    console.log(error.response || error);
+                })
         },
         // 获取商品评价信息
         get_comments: function(){

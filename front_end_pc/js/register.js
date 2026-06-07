@@ -42,6 +42,10 @@ var vm = new Vue({
 			// Set the `src` attribute of the image captcha `img` tag on the page.
 			this.image_code_url = this.host + "/image_codes/" + this.image_code_id + "/";
 		},
+        refresh_image_code: function () {
+            this.image_code = '';
+            this.generate_image_code();
+        },
         // Check username.
         check_username: function () {
             var re = /^[a-zA-Z0-9_-]{5,20}$/;
@@ -167,7 +171,8 @@ var vm = new Vue({
                 withCredentials:true,
             })
                 .then(response => {
-                    if(response.data==400){
+                    this.refresh_image_code();
+                    if(response.data.code==400){
                         this.error_sms_code = true;
                         this.error_sms_code_message = response.data.errmsg;
                         return;
@@ -193,8 +198,9 @@ var vm = new Vue({
                     }, 1000, 60)
                 })
                 .catch(error => {
+                    this.refresh_image_code();
                     if (error.response.status == 400) {
-                        this.error_sms_code_message = error.response.data.message;
+                        this.error_sms_code_message = error.response.data.errmsg;
                         this.error_sms_code = true;
                     } else {
                         console.log(error.response.data);
@@ -208,6 +214,7 @@ var vm = new Vue({
             this.check_pwd();
             this.check_cpwd();
             this.check_phone();
+            this.check_image_code();
             this.check_sms_code();
             this.check_allow();
 
@@ -216,27 +223,35 @@ var vm = new Vue({
             // After clicking the register button, send a request
             // (The following code passes parameters through the request body)            
             if (this.error_name == false && this.error_password == false && this.error_check_password == false
-                && this.error_phone == false && this.error_sms_code == false && this.error_allow == false) {
-                axios.post(this.host + '/register/', {
-                    username: this.username,
-                    password: this.password,
-                    password2: this.password2,
-                    mobile: this.mobile,
-                    sms_code: this.sms_code,
-                    allow: this.allow
-                }, {
-                    responseType: 'json',
-                    withCredentials:true,
+                && this.error_phone == false && this.error_image_code == false
+                && this.error_sms_code == false && this.error_allow == false) {
+                var csrfReady = window.ensureCsrfCookie ? window.ensureCsrfCookie() : Promise.resolve();
+                csrfReady.then(() => {
+                    return axios.post(this.host + '/register/', {
+                        username: this.username,
+                        password: this.password,
+                        password2: this.password2,
+                        mobile: this.mobile,
+                        sms_code: this.sms_code,
+                        image_code: this.image_code,
+                        image_code_id: this.image_code_id,
+                        allow: this.allow
+                    }, {
+                        responseType: 'json',
+                        withCredentials:true,
+                    });
                 })
                     .then(response => {
                         if (response.data.code==0) {
                            location.href = 'index.html';
                         }
                         if (response.data.code == 400) {
+                            this.refresh_image_code();
                             alert(response.data.errmsg)
                         }
                     })
                     .catch(error => {
+                        this.refresh_image_code();
                         if (error.response.code == 400) {
                             if ('non_field_errors' in error) {
                                 this.error_sms_code_message = error.response;

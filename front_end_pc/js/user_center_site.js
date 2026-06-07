@@ -144,8 +144,11 @@ var vm = new Vue({
             }
         },
         check_mobile: function () {
-            var re = /^1[345789]\d{9}$/;
-            if (re.test(this.form_address.mobile)) {
+            var mobile = (this.form_address.mobile || '').trim();
+            var normalized = mobile.replace(/\D/g, '');
+            var re = /^(?:\d{10}|1\d{10})$/;
+            if (re.test(normalized)) {
+                this.form_address.mobile = normalized;
                 this.error_mobile = false;
             } else {
                 this.error_mobile = true;
@@ -163,6 +166,10 @@ var vm = new Vue({
         },
         // 保存地址
         save_address: function () {
+            this.check_receiver();
+            this.check_place();
+            this.check_mobile();
+            this.check_email();
             if (this.error_receiver || this.error_place || this.error_mobile || this.error_email || !this.form_address.province_id || !this.form_address.city_id || !this.form_address.district_id) {
                 alert('信息填写有误！');
             } else {
@@ -181,7 +188,8 @@ var vm = new Vue({
                             location.href = 'user_center_site.html'
                         })
                         .catch(error => {
-                            console.log(error);
+                            var data = error.response && error.response.data ? error.response.data : {};
+                            alert(data.errmsg || data.detail || data.message || 'Invalid address data.');
                         })
                 } else {
 
@@ -196,7 +204,8 @@ var vm = new Vue({
                             this.is_show_edit = false;
                         })
                         .catch(error => {
-                            alert(error.response.data.detail || error.response.data.message);
+                            var data = error.response && error.response.data ? error.response.data : {};
+                            alert(data.errmsg || data.detail || data.message || 'Invalid address data.');
                         })
                 }
             }
