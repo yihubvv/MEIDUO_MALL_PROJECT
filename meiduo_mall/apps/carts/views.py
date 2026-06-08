@@ -280,3 +280,39 @@ class CartsSelectAllView(View):
       max_age=7*3600*24
     )
     return response
+
+class CartsSimpleView(View):
+
+    def get(self, request):
+        user = request.user
+        if user.is_authenticated:
+          redis_cli = get_redis_connection('carts')
+          sku_id_counts = redis_cli.hgetall('carts_%s'%user.id)
+          selected_ids = redis_cli.smembers('selected_%s'%user.id)
+          selected_ids = {int(sku_id) for sku_id in selected_ids}
+          carts = {}
+          for sku_id, count in sku_id_counts.items():
+            sku_id = int(sku_id)
+            carts[sku_id] = {
+              'count':int(count),
+              'selected': sku_id in selected_ids
+            }
+
+        else:
+          cookie_carts = request.COOKIES.get('carts')
+          if cookie_carts is not None:
+            carts  = pickle.loads(base64.b64decode(cookie_carts))
+          else: 
+            carts = {}
+          carts = self._normalize_carts(carts)
+        sku_ids = carts.keys()
+        skus= SKU.objects.filter(id__in=sku_ids)
+        sku_list = []
+        for sku in skus:
+          sku_list.append({
+            'id':sku.id,
+            'name':sku.name,
+            'default_image_url':sku.default_image.url,
+            'count':carts[sku.id]['count'],
+          })
+        return JsonResponse({'code':0, 'errmsg':error.NO_ERROR, 'cart_skus':sku_list})
