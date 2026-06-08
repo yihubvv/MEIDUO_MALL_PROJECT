@@ -115,6 +115,7 @@ class SKUSearchView(SearchView):
   
 from datetime import date
 from utils.goods import get_goods_specs, get_categories,get_breadcrumb
+from apps.contents.detail import normalize_fdfs_urls
 class DetailView(View):
   """
   Render the product detail page when user clicked on an image.
@@ -142,6 +143,9 @@ class DetailView(View):
       'breadcrumb': breadcrumb,
       'sku': sku,
       'specs': goods_specs,
+      'desc_detail': normalize_fdfs_urls(sku.spu.desc_detail),
+      'desc_pack': normalize_fdfs_urls(sku.spu.desc_pack),
+      'desc_service': normalize_fdfs_urls(sku.spu.desc_service),
     }
     return render(request,'detail.html',context)
   

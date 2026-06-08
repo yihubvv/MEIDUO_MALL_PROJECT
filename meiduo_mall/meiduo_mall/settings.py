@@ -288,7 +288,7 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 
 EMAIL_FROM = os.environ.get('EMAIL_FROM', 'MeiDuo Mall <>'.format(EMAIL_HOST_USER))
 
-FDFS_BASE_URL = os.environ.get('FDFS_BASE_URL', 'http://172.21.243.224:8888/').rstrip('/') + '/'
+FDFS_BASE_URL = os.environ.get('FDFS_BASE_URL', '/').rstrip('/') + '/'
 DEFAULT_FILE_STORAGE = 'utils.fastdfs.storage.MyStorage'
 STORAGES = {
     'default': {

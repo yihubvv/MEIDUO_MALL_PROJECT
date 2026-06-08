@@ -17,7 +17,12 @@ def generic_meiduo_index():
         'categories': categories,
         'contents': contents,
     }
+    template_path = os.path.abspath(os.path.join(settings.BASE_DIR, 'templates', 'index.html'))
     index_template = loader.get_template('index.html')
+    template_origin = getattr(getattr(index_template, 'origin', None), 'name', '')
+    if template_origin and os.path.abspath(template_origin) != template_path:
+        raise RuntimeError('Unexpected index template: %s' % template_origin)
+    print('Using index template: %s' % template_path)
     index_html_data = index_template.render(context)
 
     file_path = os.path.join(os.path.dirname(settings.BASE_DIR), 'front_end_pc', 'index.html')
