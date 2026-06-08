@@ -5,6 +5,18 @@ from django.http import HttpRequest, HttpResponse
 
 
 def merge_cookie_to_redis(request:HttpRequest, response:HttpResponse):
+    """
+    Allows user to merge their cart before they logged in.
+    Args:
+        request:
+            request from frontend.
+        response:
+            add extra cookie in response.
+        
+    Returns:
+        Json response:
+          JsonResponse with OK on success,400 on failure, and  deletes cookie.
+    """
     cookie_carts = request.COOKIES.get('carts')
     user = request.user
     if cookie_carts is not None:
