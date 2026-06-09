@@ -105,7 +105,11 @@ DATABASES = {
         'PORT': 3306,                          # Database port
         'USER': 'root',                        # Database username
         'PASSWORD': 'mysql',                   # Database user password
-        'NAME': 'meiduo_mall'               # Database name
+        'NAME': 'meiduo_mall',                 # Database name
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+            'init_command': "SET collation_connection='utf8mb4_general_ci', collation_server='utf8mb4_general_ci'",
+        }
     },
     'slave': {
         'ENGINE': 'django.db.backends.mysql',  # Database engine
@@ -113,7 +117,11 @@ DATABASES = {
         'PORT': 8306,                          # Database port
         'USER': 'root',                        # Database username
         'PASSWORD': 'mysql',                   # Database user password
-        'NAME': 'meiduo_mall'               # Database name
+        'NAME': 'meiduo_mall',                 # Database name
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+            'init_command': "SET collation_connection='utf8mb4_general_ci', collation_server='utf8mb4_general_ci'",
+        }
     }
 }
 
@@ -314,7 +322,7 @@ CRONJOBS = [
   ('0 */1 * * *', 'apps.contents.crons.generic_detail_htmls', '>> ' + os.path.join(BASE_DIR, 'logs/crontab.log')),
 ]
 
-# DATABASE_ROUTERS = ['utils.db_router.MasterSlaveDBRouter']
+DATABASE_ROUTERS = ['utils.db_router.MasterSlaveDBRouter']
 
 ALIPAY_APPID = '2016091600523030'
 ALIPAY_DEBUG = True
