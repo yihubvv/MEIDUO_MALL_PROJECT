@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'haystack',
     'apps.orders',
     'django_crontab',
+    'apps.payment'
 ]
 
 MIDDLEWARE = [
@@ -314,3 +315,10 @@ CRONJOBS = [
 ]
 
 # DATABASE_ROUTERS = ['utils.db_router.MasterSlaveDBRouter']
+
+ALIPAY_APPID = '2016091600523030'
+ALIPAY_DEBUG = True
+ALIPAY_URL = 'https://openapi.alipaydev.com/gateway.do'
+ALIPAY_RETURN_URL = 'http://www.meiduo.site:8000/pay_success.html'
+APP_PRIVATE_KEY_PATH = os.path.join(BASE_DIR, 'apps/payment/keys/app_private_key.pem')
+ALIPAY_PUBLIC_KEY_PATH = os.path.join(BASE_DIR, 'apps/payment/keys/alipay_public_key.pem')
