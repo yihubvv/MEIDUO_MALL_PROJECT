@@ -29,7 +29,15 @@ var vm = new Vue({
     },
     computed: {
         sku_amount: function(){
-            return (this.sku_price * this.sku_count).toFixed(2);
+            var price = parseFloat(this.sku_price);
+            var count = parseInt(this.sku_count, 10);
+            if (isNaN(price)) {
+                price = 0;
+            }
+            if (isNaN(count) || count < 1) {
+                count = 1;
+            }
+            return (price * count).toFixed(2);
         }
     },
     mounted: function(){
