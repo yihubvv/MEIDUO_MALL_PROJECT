@@ -114,7 +114,7 @@ DATABASES = {
     'slave': {
         'ENGINE': 'django.db.backends.mysql',  # Database engine
         'HOST': '127.0.0.1',                   # Database host
-        'PORT': 8306,                          # Database port
+        'PORT': 3306,                          # Database port
         'USER': 'root',                        # Database username
         'PASSWORD': 'mysql',                   # Database user password
         'NAME': 'meiduo_mall',                 # Database name
