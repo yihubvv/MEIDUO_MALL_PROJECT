@@ -304,7 +304,7 @@ class CartsSimpleView(View):
             carts  = pickle.loads(base64.b64decode(cookie_carts))
           else: 
             carts = {}
-          carts = self._normalize_carts(carts)
+          carts = CartsView._normalize_carts(carts)
         sku_ids = carts.keys()
         skus= SKU.objects.filter(id__in=sku_ids)
         sku_list = []

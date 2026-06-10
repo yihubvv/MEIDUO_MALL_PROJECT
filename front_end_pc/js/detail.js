@@ -126,17 +126,26 @@ var vm = new Vue({
         },
          // 添加购物车
         add_cart: function(){
+            var count = parseInt(this.sku_count, 10);
+            if (isNaN(count) || count < 1) {
+                count = 1;
+            } else if (count > 20) {
+                count = 20;
+            }
+            this.sku_count = count;
+
             var url = this.host + '/carts/'
             axios.post(url, {
                     sku_id: parseInt(this.sku_id),
-                    count: this.sku_count
+                    count: count
                 }, {
                     responseType: 'json',
                     withCredentials: true
                 })
                 .then(response => {
-                    alert('添加购物车成功');
-                    this.cart_total_count += response.data.count;
+                    alert('Added to cart successfully');
+                    this.cart_total_count += count;
+                    this.get_cart();
                 })
                 .catch(error => {
                     console.log(error);
