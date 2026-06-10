@@ -4,9 +4,57 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <title>美多商城-用户中心</title>
+    <title>Meiduo Mall - User Center</title>
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <style type="text/css">
+        [v-cloak] {
+            display: none;
+        }
+
+        .address_form .form_group {
+            min-height: 40px;
+            height: auto;
+        }
+
+        .address_form .form_group label {
+            width: 150px;
+            padding-right: 10px;
+            white-space: nowrap;
+        }
+
+        .address_form .form_group input {
+            width: 360px;
+        }
+
+        .address_form .form_group select {
+            width: 120px;
+        }
+
+        .address_form .error_tip {
+            display: block;
+            clear: both;
+            margin-left: 160px;
+            line-height: 20px;
+            color: #da2828;
+        }
+
+        .address_form .info_submit {
+            margin-left: 160px;
+        }
+
+        .address_form .info_reset {
+            margin-left: 10px;
+        }
+
+        .site_pop {
+            width: 650px;
+            min-height: 370px;
+            height: auto;
+            margin-left: -326px;
+            margin-top: -205px;
+        }
+    </style>
     <script type="text/javascript" src="js/host.js"></script>
     <script type="text/javascript" src="js/vue-2.5.16.js"></script>
     <script type="text/javascript" src="js/axios-0.18.0.min.js"></script>
@@ -16,25 +64,24 @@
     <div id="app" v-cloak>
         <div class="header_con">
             <div class="header">
-                <div class="welcome fl">欢迎来到美多商城!</div>
+                <div class="welcome fl">Welcome to MeiDuo!</div>
                 <div class="fr">
                     <div v-if="username" class="login_btn fl">
-                        欢迎您：<em>{{ username }}</em>
-                        <span>|</span>
-                        <a @click="logoutfunc">退出</a>
+                        Hello! <em>{{ username }}</em>
+                        <a @click="logoutfunc" class="quit">Logout</a>
                     </div>
                     <div v-else class="login_btn fl">
-                        <a href="login.html">登录</a>
+                        <a href="/login.html">Login</a>
                         <span>|</span>
-                        <a href="register.html">注册</a>
+                        <a href="/register.html">Register</a>
                     </div>
                     <div class="user_link fl">
                         <span>|</span>
-                        <a href="user_center_info.html">用户中心</a>
+                        <a href="/user_center_info.html">User Center</a>
                         <span>|</span>
-                        <a href="cart.html">我的购物车</a>
+                        <a href="/cart.html">Cart</a>
                         <span>|</span>
-                        <a href="user_center_order.html">我的订单</a>
+                        <a href="/user_center_order.html">Order(s)</a>
                     </div>
                 </div>
             </div>
@@ -154,7 +201,7 @@
                     <a @click="is_show_edit=false">×</a>
                 </div>
 
-                <form>
+                <form class="address_form">
                     <div class="form_group">
                         <label>*Recipient:</label>
                         <input v-model="form_address.receiver" @blur="check_receiver" type="text" name="">

@@ -4,7 +4,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <title>美多商城-订单提交成功</title>
+    <title>Meiduo-OrderSuccess</title>
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <script type="text/javascript" src="js/host.js"></script>
@@ -40,22 +40,45 @@
         </div>
 
         <div class="search_bar clearfix">
-            <a href="index.html" class="logo fl"><img src="images/logo.png"></a>
-            <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;提交订单成功</div>
+            <a href="index.html" class="logo fl">
+                <img src="images/logo.png">
+            </a>
+
+            <div class="sub_page_name fl">
+                |&nbsp;&nbsp;&nbsp;&nbsp;Order Submitted Successfully
+            </div>
+
             <form method="get" action="/search.html" class="search_con fr mt40">
-                <input type="text" class="input_text fl" name="q" placeholder="搜索商品">
-                <input type="submit" class="input_btn fr" name="" value="搜索">
+                <input type="text" class="input_text fl" name="q" placeholder="Search Products">
+                <input type="submit" class="input_btn fr" name="" value="Search">
             </form>
         </div>
 
-
-
         <div class="common_list_con clearfix">
+
             <div class="order_success">
-                <p><b>订单提交成功，订单总价<em>¥[[amount]]</em></b></p>
-                <p>您的订单已成功生成，选择您想要的支付方式，订单号：[[order_id]]</p>
-                <p><a href="/user_center_order.html">您可以在用户中心中我的订单中查看该订单</a></p>
+
+                <p>
+                    <b>
+                        Order submitted successfully. Total order amount:
+                        <em>¥[[amount]]</em>
+                    </b>
+                </p>
+
+                <p>
+                    Your order has been created successfully.
+                    Please choose your preferred payment method.
+                    Order Number: [[order_id]]
+                </p>
+
+                <p>
+                    <a href="/user_center_order.html">
+                        You can view this order in My Orders under the User Center
+                    </a>
+                </p>
+
             </div>
+
         </div>
 
         <div class="order_submit clearfix">

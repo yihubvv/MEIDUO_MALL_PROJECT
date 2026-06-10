@@ -4,7 +4,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <title>美多商城-邮箱验证成功</title>
+    <title>meiduo-verify success</title>
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <script type="text/javascript" src="js/vue-2.5.16.js"></script>
@@ -13,16 +13,32 @@
 </head>
 
 <body>
+
     <div class="find_header">
         <img src="images/logo.png">
-        <span class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;邮箱验证成功</span>
+
+        <span class="sub_page_name fl">
+            |&nbsp;&nbsp;&nbsp;&nbsp;Email Verification Successful
+        </span>
     </div>
 
     <div class="find_form" id="email_result">
-        <div v-if="success" class="pass_change_finish">恭喜您，邮箱验证成功！<br /><a href="/index.html">返回主页</a></div>
-        <div v-else class="pass_change_finish">链接已失效，验证失败，请重新验证！<br /><a href="/index.html">返回主页</a></div>
+
+        <div v-if="success" class="pass_change_finish">
+            Congratulations! Your email has been verified successfully!
+            <br />
+            <a href="/index.html">Return to Homepage</a>
+        </div>
+
+        <div v-else class="pass_change_finish">
+            The link has expired. Verification failed. Please verify again!
+            <br />
+            <a href="/index.html">Return to Homepage</a>
+        </div>
+
     </div>
 
+</body>
     <div class="footer no-mp">
         <div class="foot_link">
             <a href="#">About Us</a>

@@ -4,131 +4,241 @@
 
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-	<title>美多商城-用户中心</title>
+	<title>Meiduo Mall - User Center</title>
 	<link rel="stylesheet" type="text/css" href="css/reset.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<style type="text/css">
+		[v-cloak] {
+			display: none;
+		}
+	</style>
+	<script type="text/javascript" src="js/host.js"></script>
+	<script type="text/javascript" src="js/vue-2.5.16.js"></script>
+	<script type="text/javascript" src="js/axios-0.18.0.min.js"></script>
 </head>
 
-<body>
-        <div class="header_con">
-            <div class="header">
-                <div class="welcome fl">Welcome to MeiDuo!</div>
-                <div class="fr">
-                    <div v-if="username" class="login_btn fl">
-                        Hello! <em>[[ username ]]</em>
-                        <a @click="logoutfunc" class="quit">Logout</a>
-                    </div>
-                    <div v-else class="login_btn fl">
-                        <a href="/login.html">Login</a>
-                        <span>|</span>
-                        <a href="/register.html">Register</a>
-                    </div>
-                    <div class="user_link fl">
-                        <span>|</span>
-                        <a href="/user_center_info.html">User Center</a>
-                        <span>|</span>
-                        <a href="/cart.html">Cart</a>
-                        <span>|</span>
-                        <a href="/user_center_order.html">Order(s)</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-	<div class="search_bar clearfix">
-		<a href="index.html" class="logo fl"><img src="images/logo.png"></a>
-		<div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;用户中心</div>
-		<div class="search_con fr mt40">
-			<input type="text" class="input_text fl" name="" placeholder="搜索商品">
-			<input type="button" class="input_btn fr" name="" value="搜索">
+	<body>
+		<div id="app" v-cloak>
+			<div class="header_con">
+				<div class="header">
+					<div class="welcome fl">Welcome to MeiDuo!</div>
+					<div class="fr">
+					<div v-if="username" class="login_btn fl">
+						Hello! <em>[[ username ]]</em>
+						<a @click="logoutfunc" class="quit">Logout</a>
+					</div>
+					<div v-else class="login_btn fl">
+						<a href="/login.html">Login</a>
+						<span>|</span>
+						<a href="/register.html">Register</a>
+					</div>
+					<div class="user_link fl">
+						<span>|</span>
+						<a href="/user_center_info.html">User Center</a>
+						<span>|</span>
+						<a href="/cart.html">Cart</a>
+						<span>|</span>
+						<a href="/user_center_order.html">Order(s)</a>
+					</div>
+					</div>
+				</div>
+			</div>
 		</div>
-	</div>
 
-	<div class="main_con clearfix">
+			<div class="search_bar clearfix">
+			<a href="index.html" class="logo fl"><img src="images/logo.png"></a>
+			<div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;User Center</div>
+			<div class="search_con fr mt40">
+				<input type="text" class="input_text fl" name="" placeholder="Search Products">
+				<input type="button" class="input_btn fr" name="" value="Search">
+			</div>
+		</div>
+
+		<div class="main_con clearfix">
+
 		<div class="left_menu_con clearfix">
-			<h3>用户中心</h3>
+
+			<h3>User Center</h3>
+
 			<ul>
-				<li><a href="user_center_info.html">· 个人信息</a></li>
-				<li><a href="user_center_order.html" class="active">· 全部订单</a></li>
-				<li><a href="user_center_site.html">· 收货地址</a></li>
-				<li><a href="user_center_pass.html">· 修改密码</a></li>
+				<li><a href="user_center_info.html">· Personal Information</a></li>
+				<li><a href="user_center_order.html" class="active">· All Orders</a></li>
+				<li><a href="user_center_site.html">· Shipping Address</a></li>
+				<li><a href="user_center_pass.html">· Change Password</a></li>
 			</ul>
+
 		</div>
+
 		<div class="right_content clearfix">
-			<h3 class="common_title2">全部订单</h3>
+
+			<h3 class="common_title2">
+				All Orders
+			</h3>
+
 			<ul class="order_list_th w978 clearfix">
 				<li class="col01">2016-8-21 17:36:24</li>
-				<li class="col02">订单号：56872934</li>
+				<li class="col02">Order Number: 56872934</li>
 			</ul>
 
 			<table class="order_list_table w980">
+
 				<tbody>
+
 					<tr>
+
 						<td width="55%">
+
 							<ul class="order_goods_list clearfix">
-								<li class="col01"><img src="images/goods/goods001.jpg"></li>
-								<li class="col02">360手机 N6 Pro 全网通<em>2688.00元</em></li>
+
+								<li class="col01">
+									<img src="images/goods/goods001.jpg">
+								</li>
+
+								<li class="col02">
+									360 Phone N6 Pro Full Netcom
+									<em>2688.00 Yuan</em>
+								</li>
+
 								<li class="col03">1</li>
-								<li class="col04">2688.00元</li>
+
+								<li class="col04">
+									2688.00 Yuan
+								</li>
+
 							</ul>
+
 							<ul class="order_goods_list clearfix">
-								<li class="col01"><img src="images/goods/goods001.jpg"></li>
-								<li class="col02">360手机 N6 Pro 全网通<em>2688.00元</em></li>
+
+								<li class="col01">
+									<img src="images/goods/goods001.jpg">
+								</li>
+
+								<li class="col02">
+									360 Phone N6 Pro Full Netcom
+									<em>2688.00 Yuan</em>
+								</li>
+
 								<li class="col03">1</li>
-								<li class="col04">2688.00元</li>
+
+								<li class="col04">
+									2688.00 Yuan
+								</li>
+
 							</ul>
+
 						</td>
-						<td width="15%">5276.00元</td>
-						<td width="15%">支付宝</td>
-						<td width="15%"><a href="#" class="oper_btn">去付款</a></td>
+
+						<td width="15%">
+							5276.00 Yuan
+						</td>
+
+						<td width="15%">
+							Alipay
+						</td>
+
+						<td width="15%">
+							<a href="#" class="oper_btn">
+								Pay Now
+							</a>
+						</td>
+
 					</tr>
+
 				</tbody>
+
 			</table>
 
 			<ul class="order_list_th w978 clearfix">
 				<li class="col01">2016-8-21 17:36:24</li>
-				<li class="col02">订单号：56872934</li>
+				<li class="col02">Order Number: 56872934</li>
 			</ul>
+
 			<table class="order_list_table w980">
+
 				<tbody>
+
 					<tr>
+
 						<td width="55%">
+
 							<ul class="order_goods_list clearfix">
-								<li class="col01"><img src="images/goods/goods002.jpg"></li>
-								<li class="col02">iphoneX N6 Pro 全网通<em>7899.00元</em></li>
+
+								<li class="col01">
+									<img src="images/goods/goods002.jpg">
+								</li>
+
+								<li class="col02">
+									iPhone X N6 Pro Full Netcom
+									<em>7899.00 Yuan</em>
+								</li>
+
 								<li class="col03">1</li>
-								<li class="col04">7899.00元</li>
+
+								<li class="col04">
+									7899.00 Yuan
+								</li>
+
 							</ul>
+
 							<ul class="order_goods_list clearfix">
-								<li class="col01"><img src="images/goods/goods002.jpg"></li>
-								<li class="col02">iphoneX N6 Pro 全网通<em>7899.00元</em></li>
+
+								<li class="col01">
+									<img src="images/goods/goods002.jpg">
+								</li>
+
+								<li class="col02">
+									iPhone X N6 Pro Full Netcom
+									<em>7899.00 Yuan</em>
+								</li>
+
 								<li class="col03">1</li>
-								<li class="col04">7899.00元</li>
+
+								<li class="col04">
+									7899.00 Yuan
+								</li>
+
 							</ul>
+
 						</td>
-						<td width="15%">15798.00元</td>
-						<td width="15%">货到付款</td>
-						<td width="15%"><a href="#" class="oper_btn">去评价</a></td>
+
+						<td width="15%">
+							15798.00 Yuan
+						</td>
+
+						<td width="15%">
+							Cash on Delivery
+						</td>
+
+						<td width="15%">
+							<a href="#" class="oper_btn">
+								Review
+							</a>
+						</td>
+
 					</tr>
+
 				</tbody>
+
 			</table>
 
 			<div class="pagenation">
-				<a href="#">
-					<上一页</a> <a href="#" class="active">1
-				</a>
+
+					<a href="#">Previous Page</a>
+					<a href="#" class="active">1</a>
+
 				<a href="#">2</a>
 				<a href="#">3</a>
 				<a href="#">4</a>
 				<a href="#">5</a>
-				<a href="#">下一页></a>
+
+					<a href="#">Next Page</a>
+
 			</div>
+
 		</div>
-	</div>
 
-
-
-	<div class="footer">
+			</div>
+		<div class="footer">
 		<div class="foot_link">
 			<a href="#">About Us</a>
 			<span>|</span>
@@ -142,6 +252,31 @@
 		<p>Copyright © 2016 Beijing Meiduo Commerce Co., Ltd. All Rights Reserved</p>
 		<p>Phone: 010-****888 Beijing ICP License No. *******8</p>
 	</div>
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript">
+		var vm = new Vue({
+			el: '#app',
+			delimiters: ['[[', ']]'],
+			data: {
+				host: host,
+				username: getCookie('username')
+			},
+			methods: {
+				logoutfunc: function () {
+					axios.delete(this.host + '/logout/', {
+						responseType: 'json',
+						withCredentials: true
+					})
+						.then(function () {
+							location.href = 'login.html';
+						})
+						.catch(function (error) {
+							console.log(error.response);
+						});
+				}
+			}
+		});
+	</script>
 
 </body>
 

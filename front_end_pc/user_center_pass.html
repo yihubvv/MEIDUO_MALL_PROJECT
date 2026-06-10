@@ -4,9 +4,38 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <title>美多商城-用户中心</title>
+    <title>Meiduo Mall - User Center</title>
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <style type="text/css">
+        [v-cloak] {
+            display: none;
+        }
+
+        .password_form .form_group label {
+            width: 170px;
+            padding-right: 10px;
+            white-space: nowrap;
+        }
+
+        .password_form .form_group input {
+            width: 300px;
+        }
+
+        .password_form .old_pwd_error,
+        .password_form .new_pwd_error,
+        .password_form .new_cpwd_error {
+            display: block;
+            clear: both;
+            margin-left: 180px;
+            line-height: 20px;
+            color: #da2828;
+        }
+
+        .password_form .info_submit {
+            margin-left: 180px;
+        }
+    </style>
     <script type="text/javascript" src="js/host.js"></script>
     <script type="text/javascript" src="js/vue-2.5.16.js"></script>
     <script type="text/javascript" src="js/axios-0.18.0.min.js"></script>
@@ -19,7 +48,7 @@
                 <div class="welcome fl">Welcome to MeiDuo!</div>
                 <div class="fr">
                     <div v-if="username" class="login_btn fl">
-                        Hello! <em>[[ username ]]</em>
+                        Hello! <em>{{ username }}</em>
                         <a @click="logoutfunc" class="quit">Logout</a>
                     </div>
                     <div v-else class="login_btn fl">
@@ -40,53 +69,99 @@
         </div>
 
         <div class="search_bar clearfix">
-            <a href="index.html" class="logo fl"><img src="images/logo.png"></a>
-            <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;用户中心</div>
-            <div class="search_con fr mt40">
-                <input type="text" class="input_text fl" name="" placeholder="搜索商品">
-                <input type="button" class="input_btn fr" name="" value="搜索">
+
+            <a href="index.html" class="logo fl">
+                <img src="images/logo.png">
+            </a>
+
+            <div class="sub_page_name fl">
+                |&nbsp;&nbsp;&nbsp;&nbsp;User Center
             </div>
+
+            <div class="search_con fr mt40">
+                <input type="text" class="input_text fl" name="" placeholder="Search Products">
+
+                <input type="button" class="input_btn fr" name="" value="Search">
+            </div>
+
         </div>
 
         <div class="main_con clearfix">
+
             <div class="left_menu_con clearfix">
-                <h3>用户中心</h3>
+
+                <h3>User Center</h3>
+
                 <ul>
-                    <li><a href="user_center_info.html">· 个人信息</a></li>
-                    <li><a href="user_center_order.html">· 全部订单</a></li>
-                    <li><a href="user_center_site.html">· 收货地址</a></li>
-                    <li><a href="user_center_pass.html" class="active">· 修改密码</a></li>
+                    <li><a href="user_center_info.html">· Personal Information</a></li>
+                    <li><a href="user_center_order.html">· All Orders</a></li>
+                    <li><a href="user_center_site.html">· Shipping Address</a></li>
+                    <li><a href="user_center_pass.html" class="active">· Change Password</a></li>
                 </ul>
+
             </div>
+
             <div class="right_content clearfix">
+
                 <div class="info_con clearfix">
-                    <h3 class="common_title2">修改密码</h3>
+
+                    <h3 class="common_title2">
+                        Change Password
+                    </h3>
+
                     <div class="site_con pass_change_con">
-                        <form method="post" @submit.prevent="change_password">
+
+                        <form method="post" class="password_form" @submit.prevent="change_password">
+
                             <div class="form_group">
-                                <label>当前密码：</label>
+
+                                <label>Current Password:</label>
+
                                 <input v-model="old_pwd" @blur="check_opwd" type="password" name="old_password">
-                                <span v-show="error_opwd" class="old_pwd_error">请填写当前密码</span>
+
+                                <span v-show="error_opwd" class="old_pwd_error">
+                                    Please enter your current password
+                                </span>
+
                             </div>
+
                             <div class="form_group">
-                                <label>新密码：</label>
+
+                                <label>New Password:</label>
+
                                 <input v-model="new_pwd" @blur="check_pwd" type="password" name="new_password">
-                                <span v-show="error_pwd" class="new_pwd_error">密码最少8位，最长20位</span>
+
+                                <span v-show="error_pwd" class="new_pwd_error">
+                                    Password must be between 8 and 20 characters
+                                </span>
+
                             </div>
+
                             <div class="form_group">
-                                <label>确认新密码：</label>
+
+                                <label>Confirm New Password:</label>
+
                                 <input v-model="new_cpwd" @blur="check_cpwd" type="password" name="new_password2">
-                                <span v-show="error_cpwd" class="new_cpwd_error">两次输入的密码不一致</span>
+
+                                <span v-show="error_cpwd" class="new_cpwd_error">
+                                    The two passwords do not match
+                                </span>
+
                             </div>
-                            <input type="submit" value="确 定" class="info_submit">
+
+                            <input type="submit" value="Confirm" class="info_submit">
+
                         </form>
+
                     </div>
+
                 </div>
 
             </div>
-        </div>
-    </div>
 
+        </div>
+
+    </div>
     <div class="footer">
         <div class="foot_link">
             <a href="#">About Us</a>
@@ -100,7 +175,6 @@
 
         <p>Copyright © 2016 Beijing Meiduo Commerce Co., Ltd. All Rights Reserved</p>
         <p>Phone: 010-****888 Beijing ICP License No. *******8</p>
-    </div>
     </div>
     <script type="text/javascript" src="js/common.js"></script>
     <script type="text/javascript" src="js/user_center_pass.js"></script>

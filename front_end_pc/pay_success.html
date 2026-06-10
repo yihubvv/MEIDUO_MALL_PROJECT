@@ -4,7 +4,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <title>美多商城-支付成功</title>
+    <title>Meiduo-payment success</title>
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <script type="text/javascript" src="js/host.js"></script>
@@ -40,22 +40,41 @@
         </div>
 
         <div class="search_bar clearfix">
-            <a href="index.html" class="logo fl"><img src="images/logo.png"></a>
-            <div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;支付完成</div>
+            <a href="index.html" class="logo fl">
+                <img src="images/logo.png">
+            </a>
+
+            <div class="sub_page_name fl">
+                |&nbsp;&nbsp;&nbsp;&nbsp;Payment Completed
+            </div>
+
             <form method="get" action="/search.html" class="search_con fr mt40">
-                <input type="text" class="input_text fl" name="q" placeholder="搜索商品">
-                <input type="submit" class="input_btn fr" name="" value="搜索">
+                <input type="text" class="input_text fl" name="q" placeholder="Search Products">
+                <input type="submit" class="input_btn fr" name="" value="Search">
             </form>
         </div>
 
-
-
         <div class="common_list_con clearfix">
+
             <div class="order_success">
-                <p><b>订单支付成功</b></p>
-                <p>您的订单已成功支付，支付交易号：{{trade_id}}</p>
-                <p><a href="/user_center_order.html">您可以在用户中心中我的订单中查看该订单</a></p>
+
+                <p>
+                    <b>Payment Successful</b>
+                </p>
+
+                <p>
+                    Your order has been paid successfully.
+                    Payment Transaction ID: {{trade_id}}
+                </p>
+
+                <p>
+                    <a href="/user_center_order.html">
+                        You can view this order in My Orders under the User Center
+                    </a>
+                </p>
+
             </div>
+
         </div>
 
         <div class="footer">

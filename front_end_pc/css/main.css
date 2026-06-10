@@ -604,6 +604,7 @@ html,body{height:100%}
 	width:1198px;
 	border:1px solid #ededed;
 	margin:0 auto 20px;
+	min-height:500px;
 }
 
 .goods_detail_pic{width:350px;height:350px;margin:24px 0 0 24px;border:1px solid #ededed}
@@ -611,16 +612,16 @@ html,body{height:100%}
 .goods_detail_list{
 	width:730px;margin:24px 24px 0 0;
 }
-.goods_detail_list h3{font-size:24px;line-height:24px;color:#666;font-weight:normal;}
-.goods_detail_list p{color:#666;line-height:40px;}
+.goods_detail_list h3{font-size:22px;line-height:30px;color:#666;font-weight:normal;}
+.goods_detail_list p{color:#666;line-height:24px;margin:8px 0 10px;}
 .price_bar{height:72px;background-color:#fff5f5;line-height:72px;}
 .price_bar .show_pirce{font-size:20px;color:#ff3e3e;padding-left:20px}
 .price_bar .show_pirce em{font-style:normal;font-size:36px;padding-left:10px}
-.price_bar .show_unit{padding-left:150px}
-.price_bar .goods_judge{float:right;border-left:1px solid #999;height:20px;line-height:20px;margin-right:20px;padding-left:20px;margin-top:40px;}
+.price_bar .show_unit{padding-left:40px;color:#666;}
+.price_bar .goods_judge{float:right;border-left:1px solid #999;height:20px;line-height:20px;margin-right:20px;padding-left:20px;margin-top:26px;}
 .price_bar .goods_judge:hover{text-decoration:underline}
 .goods_num{height:52px;margin-top:19px;}
-.goods_num .num_name{width:70px;height:52px;line-height:52px;}
+.goods_num .num_name{width:90px;height:52px;line-height:52px;}
 .goods_num .num_add{width:75px;height:50px;border:1px solid #dddddd}
 .goods_num .num_add input{width:49px;height:50px;text-align:center;line-height:50px;border:0px;outline:none;font-size:14px;color:#666}
 .goods_num .num_add .add,.goods_num .num_add .minus{width:25px;line-height:25px;text-align:center;border-left:1px solid #ddd;border-bottom:1px solid #ddd;color:#666;font-size:14px}
@@ -634,7 +635,7 @@ html,body{height:100%}
 .operate_btn .add_cart{background-color:#c40000;color:#fff;margin-left:10px;position:relative;z-index:10;}
 
 .type_select{overflow:hidden;margin-top:10px;}
-.type_select label{float:left;width:70px;line-height:42px;}
+.type_select label{float:left;width:90px;line-height:42px;}
 .type_select a{float:left;line-height:40px;border:1px solid #ccc;padding:0px 10px;color:#5e5e5e;margin-right:10px;}
 .type_select a:hover{border:1px solid #e3101e;color:#e3101e}
 .type_select .select{border:1px solid #e3101e;background:url(../images/selected.png) right bottom no-repeat;}
@@ -646,13 +647,14 @@ html,body{height:100%}
 	border-bottom:1px solid #e3101e;
 }
 
-.detail_tab li{height:34px;line-height:34px;padding:0 30px;font-size:14px;color:#333333;float:left;border:1px solid #e8e8e8;border-bottom:0px;cursor:pointer;background-color:#faf8f8}
+.detail_tab li{height:34px;line-height:34px;width:245px;padding:0;font-size:14px;color:#333333;float:left;border:1px solid #e8e8e8;border-bottom:0px;cursor:pointer;background-color:#faf8f8;text-align:center;box-sizing:border-box;white-space:nowrap;}
 .detail_tab li.active{border-top:2px solid #e3101e;position:relative;background-color:#fff;border-left:1px solid #e3101e;border-right:1px solid #e3101e;top:-1px;height:35px;}
 
 .tab_content{display:none;}
 .current{display:block;}
 .tab_content dt{margin-top:10px;font-size:16px;color:#c40000}
 .tab_content dd{line-height:24px;margin-top:5px;}
+.tab_content dd img{max-width:100%;height:auto;}
 
 
 /* Login Page */

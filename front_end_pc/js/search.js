@@ -20,7 +20,7 @@ var vm = new Vue({
         skus: [], // 数据
         query: '',  // 查询关键字
         cart_total_count: 0, // 购物车总数量
-        cart: [], // 购物车数据
+        carts: [], // 购物车数据
         searchkey:''
     },
     computed: {
@@ -134,7 +134,24 @@ var vm = new Vue({
         },
         // 获取购物车数据
         get_cart: function(){
-
+            var url = this.host + '/carts/simple/';
+            axios.get(url, {
+                responseType: 'json',
+                withCredentials: true,
+            })
+                .then(response => {
+                    this.carts = response.data.cart_skus || [];
+                    this.cart_total_count = 0;
+                    for (var i = 0; i < this.carts.length; i++) {
+                        if (this.carts[i].name.length > 25) {
+                            this.carts[i].name = this.carts[i].name.substring(0, 25) + '...';
+                        }
+                        this.cart_total_count += this.carts[i].count;
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                })
         }
     }
 });

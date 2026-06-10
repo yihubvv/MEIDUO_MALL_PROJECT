@@ -171,7 +171,7 @@ var vm = new Vue({
             this.check_mobile();
             this.check_email();
             if (this.error_receiver || this.error_place || this.error_mobile || this.error_email || !this.form_address.province_id || !this.form_address.city_id || !this.form_address.district_id) {
-                alert('信息填写有误！');
+                alert('Please check the address information.');
             } else {
                 this.form_address.title = this.form_address.receiver;
                 if (this.editing_address_index === '') {
@@ -220,7 +220,7 @@ var vm = new Vue({
                     // // 从数组中移除地址
                     // this.addresses.splice(index, 1);
                     if (response.data.code == 0) {
-                        location.href = 'http://localhost:8080/user_center_site.html'
+                        location.href = 'user_center_site.html'
                     }
 
                 })
@@ -258,7 +258,7 @@ var vm = new Vue({
                 .then(response => {
                     // this.default_address_id = this.addresses[index].id;
                     if (response.data.code == 0) {
-                        location.href = 'http://localhost:8080/user_center_site.html'
+                        location.href = 'user_center_site.html'
                     }
                 })
                 .catch(error => {
@@ -276,7 +276,7 @@ var vm = new Vue({
         // 保存地址标题
         save_title: function (index) {
             if (!this.input_title) {
-                alert("请填写标题后再保存！");
+                alert("Please enter a title before saving.");
             } else {
                 axios.put(this.host + '/addresses/' + this.addresses[index].id + '/title/', {
                     title: this.input_title
