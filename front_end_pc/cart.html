@@ -4,7 +4,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <title>美多商城-购物车</title>
+    <title>Meiduo-Cart</title>
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <script type="text/javascript" src="js/host.js"></script>
@@ -16,25 +16,24 @@
     <div id="app">
         <div class="header_con">
             <div class="header">
-                <div class="welcome fl">欢迎来到美多商城!</div>
+                <div class="welcome fl">Welcome to MeiDuo!</div>
                 <div class="fr">
                     <div v-if="username" class="login_btn fl">
-                        欢迎您：<em>[[ username ]]</em>
-                        <span>|</span>
-                        <a @click="logoutfunc">退出</a>
+                        Hello! <em>[[ username ]]</em>
+                        <a @click="logoutfunc" class="quit">Logout</a>
                     </div>
                     <div v-else class="login_btn fl">
-                        <a href="login.html">登录</a>
+                        <a href="/login.html">Login</a>
                         <span>|</span>
-                        <a href="register.html">注册</a>
+                        <a href="/register.html">Register</a>
                     </div>
                     <div class="user_link fl">
                         <span>|</span>
-                        <a href="user_center_info.html">用户中心</a>
+                        <a href="/user_center_info.html">User Center</a>
                         <span>|</span>
-                        <a href="cart.html">我的购物车</a>
+                        <a href="/cart.html">Cart</a>
                         <span>|</span>
-                        <a href="user_center_order.html">我的订单</a>
+                        <a href="/user_center_order.html">Order(s)</a>
                     </div>
                 </div>
             </div>
