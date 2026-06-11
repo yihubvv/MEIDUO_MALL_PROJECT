@@ -42,6 +42,8 @@ This project is based off of a Chinese Web Development project MeiDuo Mall. I ma
 ## Notice
 - The OAUTH, sending SMS code, sending Emails and connecting to payment system are made unavailable because it requires private data that is not safe to be shared to others.
 
+## Search Page Preview
+<img width="1918" height="971" alt="image" src="https://github.com/user-attachments/assets/15469ce6-cca0-4015-8bbb-00344ff473cb" />
 
 ## To Run The Project On Different Devices
 
