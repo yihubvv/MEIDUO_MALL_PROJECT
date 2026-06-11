@@ -22,7 +22,29 @@ SECRET_KEY = '+qiwhqle^zz4=zjq%q!buk81_5$t3nxk0+^%fm90iq22d=n3b('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['www.meiduo.site', '127.0.0.1', 'localhost']
+MEIDUO_EXTRA_HOSTS = [
+    host.strip()
+    for host in os.environ.get('MEIDUO_EXTRA_HOSTS', '').split(',')
+    if host.strip()
+]
+
+ALLOWED_HOSTS = [
+    'www.meiduo.site',
+    'meiduo.site',
+    '127.0.0.1',
+    'localhost',
+] + MEIDUO_EXTRA_HOSTS
+
+
+def build_origins_for_hosts(hosts):
+    origins = []
+    for host in hosts:
+        host_without_port = host.split(':', 1)[0]
+        for scheme in ('http', 'https'):
+            origins.append('{}://{}'.format(scheme, host_without_port))
+            origins.append('{}://{}:8080'.format(scheme, host_without_port))
+            origins.append('{}://{}:8000'.format(scheme, host_without_port))
+    return origins
 
 CSRF_TRUSTED_ORIGINS = [
     'https://www.meiduo.site:8080',
@@ -34,7 +56,7 @@ CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1:8000',
     'http://localhost:8080',
     'http://localhost:8000',
-]
+] + build_origins_for_hosts(MEIDUO_EXTRA_HOSTS)
 
 
 # Application definition
@@ -263,7 +285,7 @@ AUTH_USER_MODEL = 'users.User'
 #####CORS#######################
 
 # CORS whitelist
-CORS_ORIGIN_WHITELIST = (
+CORS_ORIGIN_WHITELIST = tuple([
     'http://127.0.0.1:8080',
     'http://127.0.0.1:8000',
     'http://localhost:8080',
@@ -273,7 +295,7 @@ CORS_ORIGIN_WHITELIST = (
     'https://www.meiduo.site:8080',
     'https://www.meiduo.site:8000',
     'https://www.meiduo.site',
-)
+] + build_origins_for_hosts(MEIDUO_EXTRA_HOSTS))
 CORS_ALLOWED_ORIGINS = CORS_ORIGIN_WHITELIST
 CORS_ALLOW_CREDENTIALS = True  # Allow cookies to be included
 
