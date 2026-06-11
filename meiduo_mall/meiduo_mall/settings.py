@@ -8,7 +8,10 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-FDFS_CLIENT_CONF = os.path.join(BASE_DIR, 'utils/fastdfs/client.conf')
+FDFS_CLIENT_CONF = os.environ.get(
+    'FDFS_CLIENT_CONF',
+    os.path.join(BASE_DIR, 'utils/fastdfs/client.conf'),
+)
 
 # ctl + K  used for git add and commit operations
 # ctl + shift + k used for git push
@@ -123,11 +126,11 @@ WSGI_APPLICATION = 'meiduo_mall.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',  # Database engine
-        'HOST': '127.0.0.1',                   # Database host
-        'PORT': 3306,                          # Database port
-        'USER': 'root',                        # Database username
-        'PASSWORD': 'mysql',                   # Database user password
-        'NAME': 'meiduo_mall',                 # Database name
+        'HOST': os.environ.get('MYSQL_HOST', '127.0.0.1'),  # Database host
+        'PORT': int(os.environ.get('MYSQL_PORT', 3306)),    # Database port
+        'USER': os.environ.get('MYSQL_USER', 'root'),       # Database username
+        'PASSWORD': os.environ.get('MYSQL_PASSWORD', 'mysql'),  # Database user password
+        'NAME': os.environ.get('MYSQL_DATABASE', 'meiduo_mall'),  # Database name
         'OPTIONS': {
             'charset': 'utf8mb4',
             'init_command': "SET collation_connection='utf8mb4_general_ci', collation_server='utf8mb4_general_ci'",
@@ -135,11 +138,11 @@ DATABASES = {
     },
     'slave': {
         'ENGINE': 'django.db.backends.mysql',  # Database engine
-        'HOST': '127.0.0.1',                   # Database host
-        'PORT': 3306,                          # Database port
-        'USER': 'root',                        # Database username
-        'PASSWORD': 'mysql',                   # Database user password
-        'NAME': 'meiduo_mall',                 # Database name
+        'HOST': os.environ.get('MYSQL_SLAVE_HOST', os.environ.get('MYSQL_HOST', '127.0.0.1')),
+        'PORT': int(os.environ.get('MYSQL_SLAVE_PORT', os.environ.get('MYSQL_PORT', 3306))),
+        'USER': os.environ.get('MYSQL_SLAVE_USER', os.environ.get('MYSQL_USER', 'root')),
+        'PASSWORD': os.environ.get('MYSQL_SLAVE_PASSWORD', os.environ.get('MYSQL_PASSWORD', 'mysql')),
+        'NAME': os.environ.get('MYSQL_SLAVE_DATABASE', os.environ.get('MYSQL_DATABASE', 'meiduo_mall')),
         'OPTIONS': {
             'charset': 'utf8mb4',
             'init_command': "SET collation_connection='utf8mb4_general_ci', collation_server='utf8mb4_general_ci'",
@@ -193,38 +196,39 @@ STATICFILES_DIRS = [
 ]
 
 #############django-redis###########################
+REDIS_URL = os.environ.get('REDIS_URL', 'redis://127.0.0.1:6379')
 CACHES = {
     "default": {        # Reserved
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/0",
+        "LOCATION": REDIS_URL.rstrip('/') + "/0",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "session": {  # Used to store session data
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
+        "LOCATION": REDIS_URL.rstrip('/') + "/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "code": {  # Used to store code data
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/2",
+        "LOCATION": REDIS_URL.rstrip('/') + "/2",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "history": {  # Used to store code data
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/3",
+        "LOCATION": REDIS_URL.rstrip('/') + "/3",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "carts": {  # Used to store code data
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/4",
+        "LOCATION": REDIS_URL.rstrip('/') + "/4",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -333,7 +337,7 @@ STORAGES = {
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': 'http://127.0.0.1:9200/',
+        'URL': os.environ.get('ELASTICSEARCH_URL', 'http://127.0.0.1:9200/'),
         'INDEX_NAME': 'meiduo',
     },
 }

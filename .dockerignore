@@ -1,0 +1,15 @@
+.git
+.venv
+.vscode
+.idea
+__pycache__
+*.pyc
+*.pyo
+*.log
+*.pid
+data.tar.gz
+data/
+backups/
+original_chinese_project/
+elasticsearch-2.4.6/
+docker-compose.override.yml
