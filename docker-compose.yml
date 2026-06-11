@@ -64,6 +64,8 @@ services:
       FDFS_BASE_URL: /
       FDFS_TRACKER_SERVER: tracker:22122
       MEIDUO_EXTRA_HOSTS: www.meiduo.site,meiduo.site,localhost,127.0.0.1
+    ports:
+      - "${WEB_HOST_PORT:-8000}:8000"
     depends_on:
       mysql:
         condition: service_healthy
@@ -80,9 +82,9 @@ services:
       dockerfile: docker/nginx/Dockerfile
     image: meiduo-mall-nginx:latest
     ports:
-      - "80:80"
-      - "443:443"
-      - "8080:8080"
+      - "${NGINX_HTTP_PORT:-18080}:80"
+      - "${NGINX_HTTPS_PORT:-18443}:443"
+      - "${NGINX_ALT_HTTP_PORT:-18081}:8080"
     depends_on:
       - web
       - storage
