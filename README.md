@@ -32,7 +32,7 @@ This project is based off of a Chinese Web Development project MeiDuo Mall. I ma
 
 ## What Improvements I Have Made
 - Use **FastDFS** to let tracker check storage availablity and assign upcoming images to storege with more space dynamically.
-- Use **pipeline** in Python-Redis when multiple.
+- Use **pipeline** in Python-Redis when multiple redis commands are needed in one function, this reduces calls to redis and boost performance.
 - Access through **Nginx** for more secure access(Not everyone could know what you are seeing).
 - Use templates and CronTab such that for pages that displays product details, we don't need to manually create pages over and over again; Instead we generate them all together by using templates.
 - Use **uwsgi** to make sure that the conversation between the browser and python project is smooth.
