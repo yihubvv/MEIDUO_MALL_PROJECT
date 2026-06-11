@@ -39,6 +39,9 @@ This project is based off of a Chinese Web Development project MeiDuo Mall. I ma
 - Use **Docker** to make sure that the configuration is the same on other devices.
 - Create files like errors.py, general_response.py for **wording convention**; this way we don't need to go in every file to change the responses and error messages beacuse we can modify these two files.
 
+## Notice
+- The OAUTH, sending SMS code, sending Emails and connecting to payment system are made unavailable because it requires private data that is not safe to be shared to others.
+
 
 ## To Run The Project On Different Devices
 
