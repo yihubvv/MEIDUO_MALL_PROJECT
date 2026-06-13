@@ -1,8 +1,51 @@
 # MEIDUO_MALL_PROJECT
 
-MeiDuo Mall is a Django e-commerce project with a static frontend, MySQL data, Redis, Elasticsearch, and FastDFS image storage. The easiest way to run the same project on another laptop is Docker Compose.
+This project is based off of a Chinese Web Development project MeiDuo Mall. I mainly focused on building the backend logic. This project emulates the basic logic of generic shopping websites, and uses Django as its web frame. I completed the core functions such as OAUTH login, searching keywords, and managing user cart.
 
-## What Another Laptop Needs
+## Skills Used In This Project
+- Django
+- FastDFS
+- Redis
+- Elasticsearch
+- Haystack
+- Crontab
+- Redis
+- Nginx
+- MySQL
+- OAUTH
+- Celery
+- CaptCha
+
+## What I Have Learned In This Project
+- Use **Django** and its built-in modules to complete login, logout, authentication logics.
+- Use **FastDFS** to handle loads of images.
+- Implement keyword search using **Elasticsearch** and **Haystack**.
+- Generate static pages using **Crontab** after every set interval to make the site update consistely.
+- Use **Redis** to cache data and lower the stress to the server.
+- Use **Nginx** to upgrade the protocol to HTTPS instead of HTTP for security.
+- Acquire user data from different platforms by **OAUTH**.
+- Store data in **MySQL**.
+- Use **Celery** and Redis to break down tasks.
+- Use libraries like **CaptCha** to dynamically generate verification code.
+- Set **transaction** and **rollback** so that if mutiple tables in MySQL are changed and the funnction fails, the changes can be reverted back instead of being partially complete.
+- Use **Docker** to set the environment.
+
+## What Improvements I Have Made
+- Use **FastDFS** to let tracker check storage availablity and assign upcoming images to storege with more space dynamically.
+- Use **pipeline** in Python-Redis when multiple redis commands are needed in one function, this reduces calls to redis and boost performance.
+- Access through **Nginx** for more secure access(Not everyone could know what you are seeing).
+- Use templates and CronTab such that for pages that displays product details, we don't need to manually create pages over and over again; Instead we generate them all together by using templates.
+- Use **uwsgi** to make sure that the conversation between the browser and python project is smooth.
+- Use **Docker** to make sure that the configuration is the same on other devices.
+- Create files like errors.py, general_response.py for **wording convention**; this way we don't need to go in every file to change the responses and error messages beacuse we can modify these two files.
+
+## Notice
+- The OAUTH, sending SMS code, sending Emails and connecting to payment system are made unavailable because it requires private data that is not safe to be shared to others.
+
+## Search Page Preview
+<img width="1918" height="971" alt="image" src="https://github.com/user-attachments/assets/15469ce6-cca0-4015-8bbb-00344ff473cb" />
+
+## To Run The Project On Different Devices
 
 Install these first:
 
