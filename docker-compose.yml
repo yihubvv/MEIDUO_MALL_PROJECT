@@ -38,13 +38,28 @@ services:
     volumes:
       - fdfs_tracker:/var/fdfs
 
+  fdfs_seed:
+    image: alpine:3.20
+    command: >
+      sh -c "if [ ! -f /var/fdfs/data/.meiduo_seeded ]; then
+      mkdir -p /var/fdfs &&
+      tar -xzf /seed/data.tar.gz -C /var/fdfs &&
+      touch /var/fdfs/data/.meiduo_seeded;
+      fi"
+    volumes:
+      - fdfs_storage:/var/fdfs
+      - ./data.tar.gz:/seed/data.tar.gz:ro
+
   storage:
     image: delron/fastdfs
     command: storage
     environment:
       TRACKER_SERVER: tracker:22122
     depends_on:
-      - tracker
+      tracker:
+        condition: service_started
+      fdfs_seed:
+        condition: service_completed_successfully
     volumes:
       - fdfs_storage:/var/fdfs
 
