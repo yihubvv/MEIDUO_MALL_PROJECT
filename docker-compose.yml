@@ -38,28 +38,13 @@ services:
     volumes:
       - fdfs_tracker:/var/fdfs
 
-  fdfs_seed:
-    image: alpine:3.20
-    command: >
-      sh -c "if [ ! -f /var/fdfs/data/.meiduo_seeded ]; then
-      mkdir -p /var/fdfs &&
-      tar -xzf /seed/data.tar.gz -C /var/fdfs &&
-      touch /var/fdfs/data/.meiduo_seeded;
-      fi"
-    volumes:
-      - fdfs_storage:/var/fdfs
-      - ./data.tar.gz:/seed/data.tar.gz:ro
-
   storage:
     image: delron/fastdfs
     command: storage
     environment:
       TRACKER_SERVER: tracker:22122
     depends_on:
-      tracker:
-        condition: service_started
-      fdfs_seed:
-        condition: service_completed_successfully
+      - tracker
     volumes:
       - fdfs_storage:/var/fdfs
 
@@ -97,9 +82,11 @@ services:
       dockerfile: docker/nginx/Dockerfile
     image: meiduo-mall-nginx:latest
     ports:
-      - "${NGINX_HTTP_PORT:-18080}:80"
-      - "${NGINX_HTTPS_PORT:-18443}:443"
-      - "${NGINX_ALT_HTTP_PORT:-18081}:8080"
+      - "${NGINX_HTTP_PORT:-80}:80"
+      - "${NGINX_HTTPS_PORT:-443}:443"
+      - "${NGINX_ALT_HTTP_PORT:-8080}:8080"
+    volumes:
+      - fdfs_storage:/var/fdfs:ro
     depends_on:
       - web
       - storage

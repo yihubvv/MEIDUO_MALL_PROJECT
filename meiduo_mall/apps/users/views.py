@@ -308,7 +308,7 @@ class EmailView(LoginRequiredJsonMixin, View):
         
         token = generic_email_verify_token(request.user.id)
         subject = 'Testing message from MEI_DUO MALL'
-        verify_url = 'http://www.meiduo.site:8080/success_verify_email.html?token=%s'%token
+        verify_url = '%s/success_verify_email.html?token=%s' % (settings.MEIDUO_SITE_URL, token)
         message=''
         html_message = '<p>Dear User,</p>' \
                '<p>Thank you for using Meiduo Mall.</p>' \

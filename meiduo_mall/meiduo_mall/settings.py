@@ -307,7 +307,9 @@ QQ_CLIENT_ID = '101474184'
 
 QQ_CLIENT_SECRET = 'c6ce949e04e12ecc909ae6a8b09b637c'
 
-QQ_REDIRECT_URI = 'http://www.meiduo.site:8080/oauth_callback.html'
+MEIDUO_SITE_URL = os.environ.get('MEIDUO_SITE_URL', 'https://www.meiduo.site').rstrip('/')
+
+QQ_REDIRECT_URI = MEIDUO_SITE_URL + '/oauth_callback.html'
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -353,6 +355,6 @@ DATABASE_ROUTERS = ['utils.db_router.MasterSlaveDBRouter']
 ALIPAY_APPID = '2016091600523030'
 ALIPAY_DEBUG = True
 ALIPAY_URL = 'https://openapi.alipaydev.com/gateway.do'
-ALIPAY_RETURN_URL = 'http://www.meiduo.site:8000/pay_success.html'
+ALIPAY_RETURN_URL = MEIDUO_SITE_URL + '/pay_success.html'
 APP_PRIVATE_KEY_PATH = os.path.join(BASE_DIR, 'apps/payment/keys/app_private_key.pem')
 ALIPAY_PUBLIC_KEY_PATH = os.path.join(BASE_DIR, 'apps/payment/keys/alipay_public_key.pem')
