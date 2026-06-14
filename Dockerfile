@@ -14,9 +14,12 @@ RUN apt-get update \
         netcat-openbsd \
     && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt fdfs_client-py-master.zip ./
+COPY requirements.txt ./
 RUN pip install --upgrade pip \
     && pip install -r requirements.txt
+
+RUN python -m lib2to3 -w /usr/local/lib/python3.12/site-packages/fdfs_client >/dev/null \
+    && find /usr/local/lib/python3.12/site-packages/fdfs_client -name '*.bak' -delete
 
 COPY meiduo_mall ./meiduo_mall
 COPY front_end_pc ./front_end_pc

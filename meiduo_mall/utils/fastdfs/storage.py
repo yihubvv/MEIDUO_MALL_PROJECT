@@ -1,13 +1,19 @@
+import os
+
 from django.core.files.storage import Storage
 from django.conf import settings
-from fdfs_client.client import Fdfs_client
-from fdfs_client.utils import get_file_ext_name
+
+
+def get_file_ext_name(filename):
+    return os.path.splitext(filename)[1].lstrip('.')
 
 class MyStorage(Storage):
     def _open(self, name, mode='rb'):
         raise NotImplementedError('FastDFS storage does not support opening files.')
 
     def _save(self, name, content, max_length=None):
+        from fdfs_client.client import Fdfs_client
+
         client = Fdfs_client(settings.FDFS_CLIENT_CONF)
         file_ext_name = get_file_ext_name(name)
         result = client.upload_by_buffer(content.read(), file_ext_name)
