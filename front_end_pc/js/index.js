@@ -9,7 +9,33 @@ var vm = new Vue({
         cart_total_count: 0, // 购物车总数量
         carts: [], // 购物车数据,
         username:'',
-        content_category:[]
+        content_category:[],
+        banners: [
+            {
+                id: 1,
+                title: '美图M8s',
+                url: 'https://www.meiduo.site/index.html',
+                image_url: '/group1/M00/00/01/CtM3BVrLmc-AJdVSAAEI5Wm7zaw8639396'
+            },
+            {
+                id: 2,
+                title: '黑色星期五',
+                url: 'https://www.meiduo.site/index.html',
+                image_url: '/group1/M00/00/01/CtM3BVrLmiKANEeLAAFfMRWFbY86177278'
+            },
+            {
+                id: 3,
+                title: '厨卫365',
+                url: 'https://www.meiduo.site/index.html',
+                image_url: '/group1/M00/00/01/CtM3BVrLmkaAPIMJAAESCG7GAh43642702'
+            },
+            {
+                id: 4,
+                title: '君乐宝买一送一',
+                url: 'https://www.meiduo.site/index.html',
+                image_url: '/group1/M00/00/01/CtM3BVrLmnaADtSKAAGlxZuk7uk4998927'
+            }
+        ]
     },
     mounted(){
         // 获取购物车数据
@@ -19,7 +45,9 @@ var vm = new Vue({
     	this.username = getCookie('username');
 
 
-        this.get_cart()
+        this.get_cart();
+        this.get_banners();
+        this.$nextTick(this.init_slide);
     },
     methods: {
         // get_category_data:function(){
@@ -34,6 +62,28 @@ var vm = new Vue({
         //             console.log(error.response);
         //         })
         // },
+        get_banners: function () {
+            var url = this.host + '/contents/index_lbt/';
+            axios.get(url, {
+                responseType: 'json',
+                withCredentials:true,
+            })
+                .then(response => {
+                    if (response.data.code === 0 && response.data.contents.length > 0) {
+                        this.banners = response.data.contents;
+                    }
+                    this.$nextTick(this.init_slide);
+                })
+                .catch(error => {
+                    console.log(error);
+                    this.$nextTick(this.init_slide);
+                })
+        },
+        init_slide: function () {
+            if (window.initSlide) {
+                window.initSlide();
+            }
+        },
         // 退出登录按钮
         logoutfunc: function () {
             var url = this.host + '/logout/';

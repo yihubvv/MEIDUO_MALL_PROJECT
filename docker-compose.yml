@@ -62,6 +62,7 @@ services:
       REDIS_URL: redis://redis:6379
       ELASTICSEARCH_URL: http://elasticsearch:9200/
       FDFS_BASE_URL: /
+      FDFS_CLIENT_CONF: /tmp/fdfs/client.conf
       FDFS_TRACKER_SERVER: tracker:22122
       MEIDUO_EXTRA_HOSTS: www.meiduo.site,meiduo.site,localhost,127.0.0.1
     ports:

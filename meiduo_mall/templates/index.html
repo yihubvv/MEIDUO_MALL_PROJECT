@@ -87,10 +87,9 @@
 
             {# Carousel Advertisement #}
             <ul class="slide">
-                {% for lbt in contents.index_lbt %}
-                {# <li><a href="{{ lbt.url }}"><img src="http://image.meiduo.site:8888/{{ lbt.image }}" alt="{{ lbt.title }}"></a></li> #}
-                <li><a href="{{ lbt.url }}"><img src="{{ lbt.image.url }}" alt="{{ lbt.title }}"></a></li>
-                {% endfor %}
+                <li v-for="banner in banners" :key="banner.id">
+                    <a :href="banner.url"><img :src="banner.image_url" :alt="banner.title"></a>
+                </li>
             </ul>
 
             <div class="prev"></div>

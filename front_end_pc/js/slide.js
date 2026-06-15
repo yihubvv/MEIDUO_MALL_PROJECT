@@ -1,6 +1,20 @@
-$(function(){
+function initSlide(){
+	var $container = $('.pos_center_con');
+	var oldTimer = $container.data('slideTimer');
+	if (oldTimer) {
+		clearInterval(oldTimer);
+	}
+	$container.off('.slide');
+	$('.prev').off('.slide');
+	$('.next').off('.slide');
+	$('.points').empty().off('.slide');
+	$('.slide li').stop(true, true).css({'opacity':1});
+
 	var $slides = $('.slide li');
 	var len = $slides.length;
+	if (len === 0) {
+		return;
+	}
 	var nowli = 0;
 	var prevli = 0;
 	var $prev = $('.prev');
@@ -17,15 +31,21 @@ $(function(){
 		$li.appendTo($('.points'));
 	});
 
-	$points = $('.points li');
-	timer = setInterval(autoplay,4000);
+	var $points = $('.points li');
+	if (len > 1) {
+		timer = setInterval(autoplay,4000);
+		$container.data('slideTimer', timer);
+	}
 
-	$('.pos_center_con').mouseenter(function() {
+	$container.on('mouseenter.slide', function() {
 		clearInterval(timer);
 	});
 	
-	$('.pos_center_con').mouseleave(function() {
-		timer = setInterval(autoplay,4000);
+	$container.on('mouseleave.slide', function() {
+		if (len > 1) {
+			timer = setInterval(autoplay,4000);
+			$container.data('slideTimer', timer);
+		}
 	});
 
 	function autoplay(){
@@ -34,17 +54,17 @@ $(function(){
 		$points.eq(nowli).addClass('active').siblings().removeClass('active');
 	};
 
-	$points.click(function() {
+	$points.on('click.slide', function() {
 		nowli = $(this).index();		
 		$(this).addClass('active').siblings().removeClass('active');
 		move();
 	});
-	$prev.click(function() {	
+	$prev.on('click.slide', function() {
 		nowli--;
 		move();
 		$points.eq(nowli).addClass('active').siblings().removeClass('active');
 	});	
-	$next.click(function() {		
+	$next.on('click.slide', function() {
 		nowli++;
 		move();
 		$points.eq(nowli).addClass('active').siblings().removeClass('active');
@@ -90,4 +110,4 @@ $(function(){
 			prevli=nowli;		
 		}
 	}
-})
+}

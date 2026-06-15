@@ -19,7 +19,15 @@ RUN pip install --upgrade pip \
     && pip install -r requirements.txt
 
 RUN python -m lib2to3 -w /usr/local/lib/python3.12/site-packages/fdfs_client >/dev/null \
-    && find /usr/local/lib/python3.12/site-packages/fdfs_client -name '*.bak' -delete
+    && python - <<'PY'
+from pathlib import Path
+
+path = Path('/usr/local/lib/python3.12/site-packages/fdfs_client/connection.py')
+text = path.read_text()
+text = text.replace("return (''.join(recv_buff), total_size)", "return (b''.join(recv_buff), total_size)")
+path.write_text(text)
+PY
+RUN find /usr/local/lib/python3.12/site-packages/fdfs_client -name '*.bak' -delete
 
 COPY meiduo_mall ./meiduo_mall
 COPY front_end_pc ./front_end_pc
