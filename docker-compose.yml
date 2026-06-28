@@ -43,6 +43,8 @@ services:
     command: storage
     environment:
       TRACKER_SERVER: tracker:22122
+    ports:
+      - "127.0.0.1:${FDFS_STORAGE_HTTP_PORT:-8888}:8888"
     depends_on:
       - tracker
     volumes:
